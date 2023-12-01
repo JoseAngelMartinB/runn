@@ -1,0 +1,22 @@
+name: Publish
+
+on:
+  release:
+    types: [released]
+
+jobs:
+  conda-upload:
+    uses: JoseAngelMartinB/github_actions/.github/workflows/conda-upload.yml@main
+    secrets:
+      ANACONDA_TOKEN: ${{ secrets.ANACONDA_TOKEN }}
+    with:
+      package_name: runn
+      build_workflow: pre-release.yml
+
+  docs-stable:
+    permissions:
+      contents: write
+    uses: JoseAngelMartinB/github_actions/.github/workflows/docs-deploy.yml@main
+    with:
+      deploy_type: update_stable
+      notebook_kernel: runn

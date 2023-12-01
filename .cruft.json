@@ -1,0 +1,28 @@
+{
+  "template": "https://github.com/JoseAngelMartinB/cookiecutter-pypackage",
+  "commit": "92812e8c13af7cef94dfa916eb513e25ceaa1b2c",
+  "checkout": null,
+  "context": {
+    "cookiecutter": {
+      "full_name": "José Ángel Martín Baos",
+      "email": "joseangel.martin@uclm.es",
+      "github_username": "JoseAngelMartinB",
+      "repository_owner": "JoseAngelMartinB",
+      "project_title": "RUNN: Random Utility Neural Network",
+      "repository_name": "runn",
+      "package_name": "runn",
+      "module_name": "runn",
+      "project_short_description": "Python package for estimating RUNN models",
+      "index_package": "conda",
+      "conda_channel": "JoseAngelMartinB",
+      "version": "0.1.0",
+      "command_line_interface": "n",
+      "create_docker_file": "y",
+      "create_author_file": "y",
+      "create_jupyter_notebook_directory": "y",
+      "open_source_license": "MIT license",
+      "_template": "https://github.com/JoseAngelMartinB/cookiecutter-pypackage"
+    }
+  },
+  "directory": null
+}

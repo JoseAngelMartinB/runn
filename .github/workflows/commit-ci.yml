@@ -1,0 +1,22 @@
+name: Minimal CI
+
+on:
+  push:
+    branches:
+      - "**"
+    paths-ignore:
+      - README.md
+      - CHANGELOG.md
+      - LICENSE
+      - CONTRIBUTING.md
+      - docs/**
+      - mkdocs.yml
+
+jobs:
+  test:
+    uses: JoseAngelMartinB/github_actions/.github/workflows/python-install-lint-test.yml@main
+    with:
+      os: ubuntu-latest
+      py3version: "11"
+      notebook_kernel: runn
+      lint: false
