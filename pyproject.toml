@@ -111,5 +111,5 @@ dev = { file = ["requirements/dev.txt"] }
 
 [project.urls]
 repository = "https://github.com/JoseAngelMartinB/runn"
-documentation = "https://joseangelmartin.com/runn"
+documentation = "http://runn.joseangelmartin.com"
 changelog = "https://github.com/JoseAngelMartinB/runn/blob/main/CHANGELOG.md"

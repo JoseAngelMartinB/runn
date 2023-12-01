@@ -5,13 +5,13 @@
 # RUNN: Random Utility Neural Network
 
 [![Daily CI Build](https://github.com/JoseAngelMartinB/runn/actions/workflows/daily-scheduled-ci.yml/badge.svg)](https://github.com/JoseAngelMartinB/runn/actions/workflows/daily-scheduled-ci.yml)
-[![Documentation](https://github.com/JoseAngelMartinB/runn/actions/workflows/pages/pages-build-deployment/badge.svg?branch=gh-pages)](https://joseangelmartin.com/runn)
+[![Documentation](https://github.com/JoseAngelMartinB/runn/actions/workflows/pages/pages-build-deployment/badge.svg?branch=gh-pages)](http://runn.joseangelmartin.com)
 
 <!--- --8<-- [end:docs] -->
 
 ## Documentation
 
-For more detailed instructions, see our [documentation](https://joseangelmartin.com/runn/latest).
+For more detailed instructions, see our [documentation](http://runn.joseangelmartin.com/latest).
 
 ## Installation
 
@@ -38,7 +38,7 @@ mamba activate runn
 pip install --no-deps -e .
 ```
 <!--- --8<-- [end:docs-install-dev] -->
-This will install ruun in editable mode. For more detailed instructions, see our [documentation](https://joseangelmartin.com/runn/latest/installation/).
+This will install ruun in editable mode. For more detailed instructions, see our [documentation](http://runn.joseangelmartin.com/latest/installation/).
 
 ## Contributing
 
@@ -53,12 +53,12 @@ You can also run these checks yourself at any time to ensure staged changes are 
 - `pytest` - run the unit test suite and check test coverage.
 - `pytest -p memray -m "high_mem" --no-cov` (not available on Windows) - after installing memray (`mamba install memray pytest-memray`), test that memory and time performance does not exceed benchmarks.
 
-For more information, see our [documentation](https://joseangelmartin.com/runn/latest/contributing/).
+For more information, see our [documentation](http://runn.joseangelmartin.com/latest/contributing/).
 
 ## Building the documentation
 
 If you are unable to access the online documentation, you can build the documentation locally.
-First, [install a development environment of runn](https://joseangelmartin.com/runn/latest/contributing/coding/), then deploy the documentation using [mike](https://github.com/jimporter/mike):
+First, [install a development environment of runn](http://runn.joseangelmartin.com/latest/contributing/coding/), then deploy the documentation using [mike](https://github.com/jimporter/mike):
 
 ```
 mike deploy develop
