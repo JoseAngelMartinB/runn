@@ -248,7 +248,7 @@ class BaseModel:
         self.fitted = True
         return self.history
 
-    def predict(self, x: Union[tf.Tensor, np.ndarray, pd.DataFrame], **kwargs) -> tf.Tensor:
+    def predict(self, x: Union[tf.Tensor, np.ndarray, pd.DataFrame], **kwargs) -> np.ndarray:
         """Predict the choice probabilities for a given input.
 
         Args:
@@ -256,7 +256,7 @@ class BaseModel:
             **kwargs: Additional arguments passed to the keras model. See tf.keras.Model.predict() for details.
 
         Returns:
-            Tensor with the predicted choice probabilities.
+            Numpy array with the choice probabilities for each alternative.
         """
         if self.fitted is False:
             raise Exception("The model is not fitted yet. Please call fit() first.")

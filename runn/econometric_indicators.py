@@ -137,3 +137,27 @@ def value_of_time(
         Numpy array with the VOT for each observation in the input data.
     """
     return -willingness_to_pay(model, x, time_attribute, cost_attribute, alt, scaler)
+
+
+def market_shares(model: BaseModel, x: Union[tf.Tensor, np.ndarray, pd.DataFrame]) -> np.ndarray:
+    """Calculate the market shares for each alternative.
+
+    Args:
+        model: The model to be used. It should be a model defined in the runn.models module.
+        x: The input data. It can be a tf.Tensor, np.ndarray or pd.DataFrame.
+
+    Returns:
+        Numpy array with the market shares for each alternative.
+    """
+    if isinstance(x, pd.DataFrame):
+        x = x.values
+    if isinstance(x, np.ndarray):
+        x = tf.convert_to_tensor(x)
+
+    # Compute the matrix of probabilities
+    pred_probabilities = model.predict(x)
+
+    # Compute the market shares
+    market_shares = np.round(np.mean(pred_probabilities, axis=0) * 100, 4)
+
+    return market_shares
