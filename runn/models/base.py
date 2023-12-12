@@ -260,6 +260,10 @@ class BaseModel:
         """
         if self.fitted is False:
             raise Exception("The model is not fitted yet. Please call fit() first.")
+        if isinstance(x, pd.DataFrame):
+            x = x.values
+        if isinstance(x, np.ndarray):
+            x = tf.convert_to_tensor(x)
         return self.keras_model.predict(x, **kwargs)
 
     def evaluate(
@@ -278,6 +282,10 @@ class BaseModel:
         """
         if self.fitted is False:
             raise Exception("The model is not fitted yet. Please call fit() first.")
+        if isinstance(x, pd.DataFrame):
+            x = x.values
+        if isinstance(x, np.ndarray):
+            x = tf.convert_to_tensor(x)
         return self.keras_model.evaluate(x, y, **kwargs)
 
     @abstractmethod
