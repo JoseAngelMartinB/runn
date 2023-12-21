@@ -112,7 +112,7 @@ class BaseModel:
                     "'l1', 'l2' or 'l1_l2'."
                 )
                 raise ValueError(msg)
-            if self.params["regularization_rate"] is None:
+            if "regularization_rate" not in self.params or self.params["regularization_rate"] is None:
                 self.params["regularization_rate"] = 0.001
                 msg = "No 'regularization_rate' parameter provided. Using default value: 0.001."
                 warnings.warn(msg)
