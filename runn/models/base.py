@@ -1,4 +1,3 @@
-import warnings
 from abc import ABCMeta, abstractmethod
 from typing import Optional, Union
 
@@ -21,6 +20,10 @@ from tensorflow.keras.optimizers import (
 from tensorflow.keras.regularizers import l1, l1_l2, l2
 
 from runn.plot_model import plot_model
+from runn.utils import WarningManager
+
+# Initialize the warning manager
+warning_manager = WarningManager()
 
 optimizers = {
     "adadelta": Adadelta,
@@ -42,11 +45,12 @@ class BaseModel:
 
     __metaclass__ = ABCMeta
 
-    def __init__(self, params: dict = None, filename: str = None) -> None:
+    def __init__(self, params: dict = None, filename: str = None, warnings: bool = True) -> None:
         self.keras_model = None
         self.fitted = False
         self.history = None
         self.attributes = []
+        warning_manager.set_show_warnings(warnings)
         if filename is None:
             # Initialize new model
             self.params = params
@@ -91,7 +95,7 @@ class BaseModel:
         if "layers_dim" not in self.params:
             self.params["layers_dim"] = [25, 25]
             msg = "No 'layers_dim' parameter provided. Using default value: [25, 25]."
-            warnings.warn(msg)
+            warning_manager.warn(msg)
         if not isinstance(self.params["layers_dim"], list):
             msg = "The 'layers_dim' parameter should be a list with the number of neurons in each hidden layer, \" \
                 \"the length of the list is the number of hidden layers."
@@ -100,7 +104,7 @@ class BaseModel:
         if "regularizer" not in self.params:
             self.params["regularizer"] = None
             msg = "No 'regularizer' parameter provided. Using default value: None."
-            warnings.warn(msg)
+            warning_manager.warn(msg)
         if self.params["regularizer"] is not None:
             if not isinstance(self.params["regularizer"], str) or self.params["regularizer"] not in [
                 "l1",
@@ -115,7 +119,7 @@ class BaseModel:
             if "regularization_rate" not in self.params or self.params["regularization_rate"] is None:
                 self.params["regularization_rate"] = 0.001
                 msg = "No 'regularization_rate' parameter provided. Using default value: 0.001."
-                warnings.warn(msg)
+                warning_manager.warn(msg)
             if not isinstance(self.params["regularization_rate"], float) or self.params["regularization_rate"] <= 0:
                 msg = "The 'regularization_rate' parameter should be a positive float."
                 raise ValueError(msg)
@@ -123,7 +127,7 @@ class BaseModel:
         if "learning_rate" not in self.params:
             self.params["learning_rate"] = 0.001
             msg = "No 'learning_rate' parameter provided. Using default value: 0.001."
-            warnings.warn(msg)
+            warning_manager.warn(msg)
         if not isinstance(self.params["learning_rate"], float) or self.params["learning_rate"] <= 0:
             msg = "The 'learning_rate' parameter should be a positive float."
             raise ValueError(msg)
@@ -131,7 +135,7 @@ class BaseModel:
         if "optimizer" not in self.params:
             self.params["optimizer"] = "adam"
             msg = "No 'optimizer' parameter provided. Using default value: 'adam'."
-            warnings.warn(msg)
+            warning_manager.warn(msg)
         if isinstance(self.params["optimizer"], str):
             # Search for the optimizer in the list of available optimizers, be case insensitive
             optimizer = self.params["optimizer"].lower()
@@ -150,7 +154,7 @@ class BaseModel:
         if "loss" not in self.params:
             self.params["loss"] = "categorical_crossentropy"
             msg = "No 'loss' parameter provided. Using default value: 'categorical_crossentropy'."
-            warnings.warn(msg)
+            warning_manager.warn(msg)
         if not isinstance(self.params["loss"], str) and not isinstance(self.params["loss"], tf.keras.losses.Loss):
             msg = "The 'loss' parameter should be either a string or a tf.keras.losses.Loss."
             raise ValueError(msg)
@@ -158,7 +162,7 @@ class BaseModel:
         if "metrics" not in self.params:
             self.params["metrics"] = ["accuracy"]
             msg = "No 'metrics' parameter provided. Using default value: ['accuracy']."
-            warnings.warn(msg)
+            warning_manager.warn(msg)
         else:
             if isinstance(self.params["metrics"], str):
                 self.params["metrics"] = [self.params["metrics"]]

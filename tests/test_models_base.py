@@ -50,14 +50,14 @@ class TestBaseModel:
     def test_predict_before_fit(self):
         # Test calling predict before the model is fitted
         dummy_params = {"attributes": ["a", "b", "c"], "n_alt": 3, "layers_dim": [10, 5]}
-        model = BaseModel(dummy_params)
+        model = BaseModel(dummy_params, warnings=False)
         with pytest.raises(Exception):
             model.predict(np.array([1, 2, 3]))
 
     def test_evaluate_before_fit(self):
         # Test calling evaluate before the model is fitted
         dummy_params = {"attributes": ["a", "b", "c"], "n_alt": 3, "layers_dim": [10, 5]}
-        model = BaseModel(dummy_params)
+        model = BaseModel(dummy_params, warnings=False)
         with pytest.raises(Exception):
             model.evaluate(np.array([1, 2, 3]), np.array([1, 2, 3]))
 
@@ -65,35 +65,35 @@ class TestBaseModel:
         # Test the regularizer function
         dummy_params = {"attributes": ["a", "b", "c"], "n_alt": 3, "layers_dim": [10, 5]}
         # Test no regularizer
-        model = BaseModel(dummy_params)
+        model = BaseModel(dummy_params, warnings=False)
         assert model._regularizer() is None
         # Test regularizer l1 with base parametrs
         dummy_params["regularizer"] = "l1"
-        model = BaseModel(dummy_params)
+        model = BaseModel(dummy_params, warnings=False)
         assert isinstance(model._regularizer(), tf.keras.regularizers.L1)
         # Test wrong regularization rate
         dummy_params["regularization_rate"] = -0.001
         with pytest.raises(ValueError):
-            model = BaseModel(dummy_params)
+            model = BaseModel(dummy_params, warnings=False)
         # Add a regularization rate for next tests
         dummy_params["regularization_rate"] = 0.001
         # Test regularizer l2
         dummy_params["regularizer"] = "l2"
-        model = BaseModel(dummy_params)
+        model = BaseModel(dummy_params, warnings=False)
         assert isinstance(model._regularizer(), tf.keras.regularizers.L2)
         # Test regularizer l1_l2
         dummy_params["regularizer"] = "l1_l2"
-        model = BaseModel(dummy_params)
+        model = BaseModel(dummy_params, warnings=False)
         assert isinstance(model._regularizer(), tf.keras.regularizers.L1L2)
         # Test regularizer unknown
         dummy_params["regularizer"] = "unknown"
         with pytest.raises(ValueError):
-            model = BaseModel(dummy_params)
+            model = BaseModel(dummy_params, warnings=False)
             model._regularizer()
 
     def test_summary_before_fit(self):
         # Test calling summary before the model is fitted
         dummy_params = {"attributes": ["a", "b", "c"], "n_alt": 3, "layers_dim": [10, 5]}
-        model = BaseModel(dummy_params)
+        model = BaseModel(dummy_params, warnings=False)
         with pytest.raises(Exception):
             model.summary()

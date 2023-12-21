@@ -5,9 +5,9 @@ from runn.utils import WarningManager
 warning_manager = WarningManager()
 
 
-class AltSpecMonoNN(BaseModel):
+class AltSpecNN(BaseModel):
     def __init__(self, params: dict = None) -> None:
-        """Alternative-specific monotonic neural network model for choice modeling.
+        """Alternative-specific neural network model for choice modeling.
 
         Args:
             params: Dictionary with the model parameters.

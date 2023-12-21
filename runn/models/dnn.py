@@ -2,7 +2,6 @@ import datetime
 import json
 import os
 import pickle
-import warnings
 from typing import Union
 from zipfile import ZipFile
 
@@ -14,17 +13,22 @@ from tensorflow.keras.models import Model
 
 import runn
 from runn.models.base import BaseModel
+from runn.utils import WarningManager
+
+# Initialize the warning manager
+warning_manager = WarningManager()
 
 
 class DNN(BaseModel):
-    def __init__(self, params: dict = None, filename: str = None) -> None:
+    def __init__(self, params: dict = None, filename: str = None, warnings: bool = True) -> None:
         """Deep neural network model for choice modeling.
 
         Args:
             params: Dictionary with the model parameters. Default: None.
             filename: Load a previously trained model from a file. Default: None.
+            warnings: Whether to show warnings or not. Default: True.
         """
-        super().__init__(params, filename)
+        super().__init__(params, filename, warnings)
         if filename is None:
             self._initilize_dnn_params()
             self._build()
@@ -35,7 +39,7 @@ class DNN(BaseModel):
         if "activation" not in self.params:
             self.params["activation"] = "relu"
             msg = "No 'activation' parameter provided. Using default value: 'relu'."
-            warnings.warn(msg)
+            warning_manager.warn(msg)
         if isinstance(self.params["activation"], str):
             self.params["activation"] = [self.params["activation"] for _ in range(len(self.params["layers_dim"]))]
         elif isinstance(self.params["activation"], list):
@@ -53,7 +57,7 @@ class DNN(BaseModel):
         if "dropout" not in self.params or self.params["dropout"] is None:
             self.params["dropout"] = 0.0
             msg = "No 'dropout' parameter provided. Using default value: 0.0."
-            warnings.warn(msg)
+            warning_manager.warn(msg)
         if isinstance(self.params["dropout"], float) or self.params["dropout"] == 0:
             self.params["dropout"] = [self.params["dropout"] for _ in range(len(self.params["layers_dim"]))]
         elif isinstance(self.params["dropout"], list):
@@ -64,7 +68,7 @@ class DNN(BaseModel):
         if "batch_norm" not in self.params:
             self.params["batch_norm"] = False
             msg = "No 'batch_norm' parameter provided. Using default value: False."
-            warnings.warn(msg)
+            warning_manager.warn(msg)
         if not isinstance(self.params["batch_norm"], bool):
             msg = "The 'batch_norm' parameter should be a boolean."
             raise ValueError(msg)
@@ -188,7 +192,7 @@ class DNN(BaseModel):
                     "The model was created with a newer version of runn ({}). "
                     "Please update runn to version {} or higher.".format(model_info["runn_version"], runn.__version__)
                 )
-                warnings.warn(msg)
+                warning_manager.warn(msg)
 
             # Load the parameters
             self.params = pickle.load(open(aux_files + "/" + aux_name + "_params.pkl", "rb"))
