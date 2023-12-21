@@ -13,18 +13,22 @@
       
       
       
+        <link rel="prev" href="../dnn/">
       
       
-      <link rel="icon" href="/assets/images/favicon.png">
+        <link rel="next" href="../runn/">
+      
+      
+      <link rel="icon" href="../../../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.2">
     
     
       
-        <title>RUNN (Random Utility Neural Network)</title>
+        <title>runn.models.ensemble_dnn - RUNN (Random Utility Neural Network)</title>
       
     
     
-      <link rel="stylesheet" href="/assets/stylesheets/main.50c56a3b.min.css">
+      <link rel="stylesheet" href="../../../../assets/stylesheets/main.50c56a3b.min.css">
       
       
 
@@ -43,11 +47,11 @@
       
     
     
-      <link rel="stylesheet" href="/assets/_mkdocstrings.css">
+      <link rel="stylesheet" href="../../../../assets/_mkdocstrings.css">
     
-      <link rel="stylesheet" href="/static/extras.css">
+      <link rel="stylesheet" href="../../../../static/extras.css">
     
-    <script>__md_scope=new URL("/",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -65,6 +69,11 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
+        
+        <a href="#runn.models.ensemble_dnn.warning_manager" class="md-skip">
+          Skip to content
+        </a>
+      
     </div>
     <div data-md-component="announce">
       
@@ -81,7 +90,7 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="/." title="RUNN (Random Utility Neural Network)" class="md-header__button md-logo" aria-label="RUNN (Random Utility Neural Network)" data-md-component="logo">
+    <a href="../../../.." title="RUNN (Random Utility Neural Network)" class="md-header__button md-logo" aria-label="RUNN (Random Utility Neural Network)" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
@@ -101,7 +110,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              
+              runn.models.ensemble_dnn
             
           </span>
         </div>
@@ -188,7 +197,7 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="/." title="RUNN (Random Utility Neural Network)" class="md-nav__button md-logo" aria-label="RUNN (Random Utility Neural Network)" data-md-component="logo">
+    <a href="../../../.." title="RUNN (Random Utility Neural Network)" class="md-nav__button md-logo" aria-label="RUNN (Random Utility Neural Network)" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
@@ -218,7 +227,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/." class="md-nav__link">
+      <a href="../../../.." class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -238,7 +247,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/installation/" class="md-nav__link">
+      <a href="../../../../installation/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -299,7 +308,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/examples/1_intro_to_runn/" class="md-nav__link">
+      <a href="../../../../examples/1_intro_to_runn/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -327,7 +336,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/contributing/" class="md-nav__link">
+      <a href="../../../../contributing/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -347,7 +356,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/CHANGELOG/" class="md-nav__link">
+      <a href="../../../../CHANGELOG/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -364,8 +373,10 @@
       
   
   
+    
   
   
+  
     
     
       
@@ -375,12 +386,12 @@
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" checked>
         
           
           <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
@@ -394,7 +405,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_6">
             <span class="md-nav__icon md-icon"></span>
             Reference
@@ -405,8 +416,10 @@
                 
   
   
+    
   
   
+  
     
     
       
@@ -424,12 +437,12 @@
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_1" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_1" checked>
         
           
           <label class="md-nav__link" for="__nav_6_1" id="__nav_6_1_label" tabindex="0">
@@ -443,7 +456,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_1_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_1_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_6_1">
             <span class="md-nav__icon md-icon"></span>
             Python API
@@ -457,7 +470,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/reference/runn/econometric_indicators/" class="md-nav__link">
+      <a href="../../econometric_indicators/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -478,7 +491,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/reference/runn/metrics/" class="md-nav__link">
+      <a href="../../metrics/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -499,7 +512,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/reference/runn/plot_model/" class="md-nav__link">
+      <a href="../../plot_model/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -520,7 +533,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/reference/runn/utils/" class="md-nav__link">
+      <a href="../../utils/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -538,8 +551,10 @@
                 
   
   
+    
   
   
+  
     
     
       
@@ -559,12 +574,12 @@
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_1_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_1_5" checked>
         
           
           <label class="md-nav__link" for="__nav_6_1_5" id="__nav_6_1_5_label" tabindex="0">
@@ -578,7 +593,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_6_1_5_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_6_1_5_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_6_1_5">
             <span class="md-nav__icon md-icon"></span>
             runn.models
@@ -592,7 +607,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/reference/runn/models/altspec_mono_nn/" class="md-nav__link">
+      <a href="../altspec_mono_nn/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -613,7 +628,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/reference/runn/models/altspec_nn/" class="md-nav__link">
+      <a href="../altspec_nn/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -634,7 +649,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/reference/runn/models/base/" class="md-nav__link">
+      <a href="../base/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -655,7 +670,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/reference/runn/models/dnn/" class="md-nav__link">
+      <a href="../dnn/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -673,10 +688,28 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="/reference/runn/models/ensemble_dnn/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    runn.models.ensemble_dnn
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   <span class="md-ellipsis">
@@ -685,6 +718,42 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#runn.models.ensemble_dnn.warning_manager" class="md-nav__link">
+    <span class="md-ellipsis">
+      warning_manager
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#runn.models.ensemble_dnn.EnsembleDNN" class="md-nav__link">
+    <span class="md-ellipsis">
+      EnsembleDNN
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -697,7 +766,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/reference/runn/models/runn/" class="md-nav__link">
+      <a href="../runn/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -752,6 +821,32 @@
   
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#runn.models.ensemble_dnn.warning_manager" class="md-nav__link">
+    <span class="md-ellipsis">
+      warning_manager
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#runn.models.ensemble_dnn.EnsembleDNN" class="md-nav__link">
+    <span class="md-ellipsis">
+      EnsembleDNN
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -762,7 +857,165 @@
             <div class="md-content" data-md-component="content">
               <article class="md-content__inner md-typeset">
                 
-  <h1>404 - Not found</h1>
+
+
+
+                  
+
+  
+  
+
+
+  <h1>runn.models.ensemble_dnn</h1>
+
+<div class="doc doc-object doc-module">
+
+
+
+
+  <div class="doc doc-contents first">
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+
+<h2 id="runn.models.ensemble_dnn.warning_manager" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">warning_manager</span> <span class="o">=</span> <span class="n">WarningManager</span><span class="p">()</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-module-attribute"><code>module-attribute</code></small>
+  </span>
+
+<a href="#runn.models.ensemble_dnn.warning_manager" class="headerlink" title="Permanent link">#</a></h2>
+
+
+  <div class="doc doc-contents ">
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-class">
+
+
+
+
+<h2 id="runn.models.ensemble_dnn.EnsembleDNN" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">EnsembleDNN</span><span class="p">(</span><span class="n">params</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+
+<a href="#runn.models.ensemble_dnn.EnsembleDNN" class="headerlink" title="Permanent link">#</a></h2>
+
+
+  <div class="doc doc-contents ">
+          <p class="doc doc-class-bases">
+            Bases: <code><a class="autorefs autorefs-internal" title="runn.models.dnn.DNN" href="../dnn/#runn.models.dnn.DNN">DNN</a></code></p>
+
+  
+      <p>Ensemble of deep neural network models for choice modeling.</p>
+
+
+
+  <table>
+    <thead>
+      <tr>
+        <th><b>PARAMETER</b></th>
+        <th><b> DESCRIPTION</b></th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>params</code></td>
+          <td class="doc-param-details">
+            <div class="doc-md-description">
+              <p>Dictionary with the model parameters.</p>
+            </div>
+            <p>
+                <span class="doc-param-annotation">
+                  <b>TYPE:</b>
+                    <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#dict">dict</a></code>
+                </span>
+                <span class="doc-param-default">
+                  <b>DEFAULT:</b> 
+                    <code>None</code>
+                </span>
+            </p>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+                <details class="quote">
+                  <summary>Source code in <code>runn/models/ensemble_dnn.py</code></summary>
+                  <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-0-10">10</a></span>
+<span class="normal"><a href="#__codelineno-0-11">11</a></span>
+<span class="normal"><a href="#__codelineno-0-12">12</a></span>
+<span class="normal"><a href="#__codelineno-0-13">13</a></span>
+<span class="normal"><a href="#__codelineno-0-14">14</a></span>
+<span class="normal"><a href="#__codelineno-0-15">15</a></span>
+<span class="normal"><a href="#__codelineno-0-16">16</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9"></a><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">params</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Ensemble of deep neural network models for choice modeling.</span>
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11"></a>
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12"></a><span class="sd">    Args:</span>
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13"></a><span class="sd">        params: Dictionary with the model parameters.</span>
+</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14"></a><span class="sd">    &quot;&quot;&quot;</span>
+</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15"></a>
+</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16"></a>    <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+</span></code></pre></div></td></tr></table></div>
+                </details>
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
 
               </article>
             </div>
@@ -797,10 +1050,10 @@
     </div>
     
     
-    <script id="__config" type="application/json">{"base": "/", "features": ["navigation.indexes"], "search": "/assets/javascripts/workers/search.f886a092.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
+    <script id="__config" type="application/json">{"base": "../../../..", "features": ["navigation.indexes"], "search": "../../../../assets/javascripts/workers/search.f886a092.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
     
     
-      <script src="/assets/javascripts/bundle.d7c377c4.min.js"></script>
+      <script src="../../../../assets/javascripts/bundle.d7c377c4.min.js"></script>
       
     
   </body>

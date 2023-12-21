@@ -13,18 +13,22 @@
       
       
       
+        <link rel="prev" href="../plot_model/">
       
       
-      <link rel="icon" href="/assets/images/favicon.png">
+        <link rel="next" href="../models/altspec_mono_nn/">
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.2">
     
     
       
-        <title>RUNN (Random Utility Neural Network)</title>
+        <title>runn.utils - RUNN (Random Utility Neural Network)</title>
       
     
     
-      <link rel="stylesheet" href="/assets/stylesheets/main.50c56a3b.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.50c56a3b.min.css">
       
       
 
@@ -43,11 +47,11 @@
       
     
     
-      <link rel="stylesheet" href="/assets/_mkdocstrings.css">
+      <link rel="stylesheet" href="../../../assets/_mkdocstrings.css">
     
-      <link rel="stylesheet" href="/static/extras.css">
+      <link rel="stylesheet" href="../../../static/extras.css">
     
-    <script>__md_scope=new URL("/",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -65,6 +69,11 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
+        
+        <a href="#runn.utils.WarningManager" class="md-skip">
+          Skip to content
+        </a>
+      
     </div>
     <div data-md-component="announce">
       
@@ -81,7 +90,7 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="/." title="RUNN (Random Utility Neural Network)" class="md-header__button md-logo" aria-label="RUNN (Random Utility Neural Network)" data-md-component="logo">
+    <a href="../../.." title="RUNN (Random Utility Neural Network)" class="md-header__button md-logo" aria-label="RUNN (Random Utility Neural Network)" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
@@ -101,7 +110,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              
+              runn.utils
             
           </span>
         </div>
@@ -188,7 +197,7 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="/." title="RUNN (Random Utility Neural Network)" class="md-nav__button md-logo" aria-label="RUNN (Random Utility Neural Network)" data-md-component="logo">
+    <a href="../../.." title="RUNN (Random Utility Neural Network)" class="md-nav__button md-logo" aria-label="RUNN (Random Utility Neural Network)" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
@@ -218,7 +227,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/." class="md-nav__link">
+      <a href="../../.." class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -238,7 +247,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/installation/" class="md-nav__link">
+      <a href="../../../installation/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -299,7 +308,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/examples/1_intro_to_runn/" class="md-nav__link">
+      <a href="../../../examples/1_intro_to_runn/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -327,7 +336,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/contributing/" class="md-nav__link">
+      <a href="../../../contributing/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -347,7 +356,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/CHANGELOG/" class="md-nav__link">
+      <a href="../../../CHANGELOG/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -364,8 +373,10 @@
       
   
   
+    
   
   
+  
     
     
       
@@ -375,12 +386,12 @@
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" checked>
         
           
           <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
@@ -394,7 +405,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_6">
             <span class="md-nav__icon md-icon"></span>
             Reference
@@ -405,8 +416,10 @@
                 
   
   
+    
   
   
+  
     
     
       
@@ -424,12 +437,12 @@
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_1" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_1" checked>
         
           
           <label class="md-nav__link" for="__nav_6_1" id="__nav_6_1_label" tabindex="0">
@@ -443,7 +456,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_1_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_1_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_6_1">
             <span class="md-nav__icon md-icon"></span>
             Python API
@@ -457,7 +470,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/reference/runn/econometric_indicators/" class="md-nav__link">
+      <a href="../econometric_indicators/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -478,7 +491,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/reference/runn/metrics/" class="md-nav__link">
+      <a href="../metrics/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -499,7 +512,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/reference/runn/plot_model/" class="md-nav__link">
+      <a href="../plot_model/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -517,10 +530,28 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="/reference/runn/utils/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    runn.utils
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   <span class="md-ellipsis">
@@ -529,6 +560,57 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#runn.utils.WarningManager" class="md-nav__link">
+    <span class="md-ellipsis">
+      WarningManager
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="WarningManager">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#runn.utils.WarningManager.set_show_warnings" class="md-nav__link">
+    <span class="md-ellipsis">
+      set_show_warnings()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#runn.utils.WarningManager.warn" class="md-nav__link">
+    <span class="md-ellipsis">
+      warn()
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -592,7 +674,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/reference/runn/models/altspec_mono_nn/" class="md-nav__link">
+      <a href="../models/altspec_mono_nn/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -613,7 +695,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/reference/runn/models/altspec_nn/" class="md-nav__link">
+      <a href="../models/altspec_nn/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -634,7 +716,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/reference/runn/models/base/" class="md-nav__link">
+      <a href="../models/base/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -655,7 +737,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/reference/runn/models/dnn/" class="md-nav__link">
+      <a href="../models/dnn/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -676,7 +758,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/reference/runn/models/ensemble_dnn/" class="md-nav__link">
+      <a href="../models/ensemble_dnn/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -697,7 +779,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/reference/runn/models/runn/" class="md-nav__link">
+      <a href="../models/runn/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -752,6 +834,47 @@
   
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#runn.utils.WarningManager" class="md-nav__link">
+    <span class="md-ellipsis">
+      WarningManager
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="WarningManager">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#runn.utils.WarningManager.set_show_warnings" class="md-nav__link">
+    <span class="md-ellipsis">
+      set_show_warnings()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#runn.utils.WarningManager.warn" class="md-nav__link">
+    <span class="md-ellipsis">
+      warn()
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -762,7 +885,228 @@
             <div class="md-content" data-md-component="content">
               <article class="md-content__inner md-typeset">
                 
-  <h1>404 - Not found</h1>
+
+
+
+                  
+
+  
+  
+
+
+  <h1>runn.utils</h1>
+
+<div class="doc doc-object doc-module">
+
+
+
+
+  <div class="doc doc-contents first">
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-class">
+
+
+
+
+<h2 id="runn.utils.WarningManager" class="doc doc-heading">
+          <code>WarningManager</code>
+
+
+<a href="#runn.utils.WarningManager" class="headerlink" title="Permanent link">#</a></h2>
+
+
+  <div class="doc doc-contents ">
+
+  
+      <p>Singleton class to manage warnings.</p>
+
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+
+
+<h3 id="runn.utils.WarningManager.set_show_warnings" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">set_show_warnings</span><span class="p">(</span><span class="n">show_warnings</span><span class="p">)</span></code>
+
+<a href="#runn.utils.WarningManager.set_show_warnings" class="headerlink" title="Permanent link">#</a></h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Set whether to show warnings or not.</p>
+
+
+
+  <table>
+    <thead>
+      <tr>
+        <th><b>PARAMETER</b></th>
+        <th><b> DESCRIPTION</b></th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>show_warnings</code></td>
+          <td class="doc-param-details">
+            <div class="doc-md-description">
+              <p>Whether to show warnings or not.</p>
+            </div>
+            <p>
+                <span class="doc-param-annotation">
+                  <b>TYPE:</b>
+                    <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></code>
+                </span>
+            </p>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+          <details class="quote">
+            <summary>Source code in <code>runn/utils.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-27">27</a></span>
+<span class="normal"><a href="#__codelineno-0-28">28</a></span>
+<span class="normal"><a href="#__codelineno-0-29">29</a></span>
+<span class="normal"><a href="#__codelineno-0-30">30</a></span>
+<span class="normal"><a href="#__codelineno-0-31">31</a></span>
+<span class="normal"><a href="#__codelineno-0-32">32</a></span>
+<span class="normal"><a href="#__codelineno-0-33">33</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-27"><a id="__codelineno-0-27" name="__codelineno-0-27"></a><span class="k">def</span> <span class="nf">set_show_warnings</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">show_warnings</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="__span-0-28"><a id="__codelineno-0-28" name="__codelineno-0-28"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Set whether to show warnings or not.</span>
+</span><span id="__span-0-29"><a id="__codelineno-0-29" name="__codelineno-0-29"></a>
+</span><span id="__span-0-30"><a id="__codelineno-0-30" name="__codelineno-0-30"></a><span class="sd">    Args:</span>
+</span><span id="__span-0-31"><a id="__codelineno-0-31" name="__codelineno-0-31"></a><span class="sd">        show_warnings: Whether to show warnings or not.</span>
+</span><span id="__span-0-32"><a id="__codelineno-0-32" name="__codelineno-0-32"></a><span class="sd">    &quot;&quot;&quot;</span>
+</span><span id="__span-0-33"><a id="__codelineno-0-33" name="__codelineno-0-33"></a>    <span class="bp">self</span><span class="o">.</span><span class="n">show_warnings</span> <span class="o">=</span> <span class="n">show_warnings</span>
+</span></code></pre></div></td></tr></table></div>
+          </details>
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+
+<h3 id="runn.utils.WarningManager.warn" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">warn</span><span class="p">(</span><span class="n">message</span><span class="p">)</span></code>
+
+<a href="#runn.utils.WarningManager.warn" class="headerlink" title="Permanent link">#</a></h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Show a warning message.</p>
+
+
+
+  <table>
+    <thead>
+      <tr>
+        <th><b>PARAMETER</b></th>
+        <th><b> DESCRIPTION</b></th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>message</code></td>
+          <td class="doc-param-details">
+            <div class="doc-md-description">
+              <p>The warning message.</p>
+            </div>
+            <p>
+                <span class="doc-param-annotation">
+                  <b>TYPE:</b>
+                    <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></code>
+                </span>
+            </p>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+          <details class="quote">
+            <summary>Source code in <code>runn/utils.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-16">16</a></span>
+<span class="normal"><a href="#__codelineno-0-17">17</a></span>
+<span class="normal"><a href="#__codelineno-0-18">18</a></span>
+<span class="normal"><a href="#__codelineno-0-19">19</a></span>
+<span class="normal"><a href="#__codelineno-0-20">20</a></span>
+<span class="normal"><a href="#__codelineno-0-21">21</a></span>
+<span class="normal"><a href="#__codelineno-0-22">22</a></span>
+<span class="normal"><a href="#__codelineno-0-23">23</a></span>
+<span class="normal"><a href="#__codelineno-0-24">24</a></span>
+<span class="normal"><a href="#__codelineno-0-25">25</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16"></a><span class="k">def</span> <span class="nf">warn</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Show a warning message.</span>
+</span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18"></a>
+</span><span id="__span-0-19"><a id="__codelineno-0-19" name="__codelineno-0-19"></a><span class="sd">    Args:</span>
+</span><span id="__span-0-20"><a id="__codelineno-0-20" name="__codelineno-0-20"></a><span class="sd">        message: The warning message.</span>
+</span><span id="__span-0-21"><a id="__codelineno-0-21" name="__codelineno-0-21"></a><span class="sd">    &quot;&quot;&quot;</span>
+</span><span id="__span-0-22"><a id="__codelineno-0-22" name="__codelineno-0-22"></a>    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+</span><span id="__span-0-23"><a id="__codelineno-0-23" name="__codelineno-0-23"></a>        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;The message should be a string.&quot;</span><span class="p">)</span>
+</span><span id="__span-0-24"><a id="__codelineno-0-24" name="__codelineno-0-24"></a>    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">show_warnings</span><span class="p">:</span>
+</span><span id="__span-0-25"><a id="__codelineno-0-25" name="__codelineno-0-25"></a>        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+</span></code></pre></div></td></tr></table></div>
+          </details>
+  </div>
+
+</div>
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
 
               </article>
             </div>
@@ -797,10 +1141,10 @@
     </div>
     
     
-    <script id="__config" type="application/json">{"base": "/", "features": ["navigation.indexes"], "search": "/assets/javascripts/workers/search.f886a092.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
+    <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.indexes"], "search": "../../../assets/javascripts/workers/search.f886a092.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
     
     
-      <script src="/assets/javascripts/bundle.d7c377c4.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.d7c377c4.min.js"></script>
       
     
   </body>
