@@ -46,22 +46,31 @@ class BaseModel:
     __metaclass__ = ABCMeta
 
     def __init__(self, params: dict = None, filename: str = None, warnings: bool = True) -> None:
-        self.keras_model = None
-        self.fitted = False
-        self.history = None
-        self.attributes = []
-        warning_manager.set_show_warnings(warnings)
+        self._initialize_base_variables(warnings=warnings)
         if filename is None:
             # Initialize new model
             self.params = params
-            self._initilize_base_params()
+            self._initialize_base_params()
         elif isinstance(filename, str):
             # Load model from file
             self.load(filename)
         else:
             raise ValueError("The 'filename' parameter should be a string.")
 
-    def _initilize_base_params(self) -> None:
+    def _initialize_base_variables(self, **kwargs) -> None:
+        """Initialize the base variables of the model.
+
+        Args:
+            **kwargs: Additional arguments passed to the model.
+        """
+        self.keras_model = None
+        self.fitted = False
+        self.history = None
+        self.attributes = []
+        if "warnings" in kwargs:
+            warning_manager.set_show_warnings(kwargs.get("warnings", True))
+
+    def _initialize_base_params(self) -> None:
         """Initialize the base parameters of the model."""
         if self.params is None:
             raise ValueError("No parameters provided. Please provide a dictionary with the model parameters.")

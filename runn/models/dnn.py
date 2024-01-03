@@ -30,11 +30,11 @@ class DNN(BaseModel):
         """
         super().__init__(params, filename, warnings)
         if filename is None:
-            self._initilize_dnn_params()
+            self._initialize_dnn_params()
             self._build()
         self._compile()
 
-    def _initilize_dnn_params(self) -> None:
+    def _initialize_dnn_params(self) -> None:
         """Initialize the parameters of the DNN model."""
         if "activation" not in self.params:
             self.params["activation"] = "relu"
