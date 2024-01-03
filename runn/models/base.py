@@ -201,7 +201,7 @@ class BaseModel:
     def summary(self) -> None:
         """Print a summary of the keras model."""
         if self.keras_model is None:
-            raise Exception("Keras model is not initialized yet. Please call build() first.")
+            raise Exception("Keras model is not initialized yet. Please initialize the model first.")
         self.keras_model.summary()
 
     def plot_model(self, filename: str = None, expand_nested=True, dpi: int = 96) -> None:
@@ -214,7 +214,7 @@ class BaseModel:
             dpi: Resolution of the plot. Default: 96.
         """
         if self.keras_model is None:
-            raise ValueError("Keras model is not initialized yet. Please call build() first.")
+            raise ValueError("Keras model is not initialized yet. Please initialize the model first.")
         if filename is None:
             filename = self.__class__.__name__ + ".png"
         return plot_model(
@@ -306,9 +306,13 @@ class BaseModel:
         raise NotImplementedError
 
     @abstractmethod
-    def save(self):
+    def save(self, path: str = "model.zip") -> None:
         raise NotImplementedError
 
     @abstractmethod
-    def load(self):
+    def load(self, path: str) -> None:
+        raise NotImplementedError
+
+    @abstractmethod
+    def get_utility(self, x: Union[tf.Tensor, np.ndarray, pd.DataFrame]) -> np.ndarray:
         raise NotImplementedError
