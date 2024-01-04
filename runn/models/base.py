@@ -41,16 +41,58 @@ optimizers = {
 
 
 class BaseModel:
-    """Abstract base class for all choice models."""
+    """Abstract base class for all choice models.
+
+    Args:
+        attributes: List with the attributes names in the model, in the same order as in the input data. If None, the
+            model cannot be initialized unless it is loaded from a file. Default: None.
+        n_alt: Number of alternatives in the choice set. If None, the model cannot be initialized unless it is loaded
+            from a file. Default: None.
+        layers_dim: List with the number of neurons in each hidden layer, the length of the list is the number of
+            hidden layers. Default: [25, 25].
+        regularizer: Type of regularization to apply. Possible values: 'l1', 'l2' or 'l1_l2'. Default: None.
+        regularization_rate: Regularization rate if regularizer is not None. Default: 0.001.
+        learning_rate: Learning rate of the optimizer. Default: 0.001.
+        optimizer: Optimizer to use. Can be either a string or a tf.keras.optimizers.Optimizer. Default: 'adam'.
+        loss: Loss function to use. Can be either a string or a tf.keras.losses.Loss. Default:
+            'categorical_crossentropy'.
+        metrics: List of metrics to be evaluated by the model during training and testing. Each of this can be either
+            a string or a tf.keras.metrics.Metric. Default: ['accuracy'].
+        filename: Load a previously trained model from a file. If None, a new model will be initialized. When loading
+            a model from a file, the previous parameters will be ignored. Default: None.
+        warnings: Whether to show warnings or not. Default: True.
+    """
 
     __metaclass__ = ABCMeta
 
-    def __init__(self, params: dict = None, filename: str = None, warnings: bool = True) -> None:
+    def __init__(
+        self,
+        attributes: Optional[list] = None,
+        n_alt: Optional[int] = None,
+        layers_dim: list = [25, 25],
+        regularizer: Optional[str] = None,
+        regularization_rate: float = 0.001,
+        learning_rate: float = 0.001,
+        optimizer: Union[str, tf.keras.optimizers.Optimizer] = "adam",
+        loss: Union[str, tf.keras.losses.Loss] = "categorical_crossentropy",
+        metrics: list = ["accuracy"],
+        filename: Optional[str] = None,
+        warnings: bool = True,
+    ) -> None:
         self._initialize_base_variables(warnings=warnings)
         if filename is None:
             # Initialize new model
-            self.params = params
-            self._initialize_base_params()
+            self._initialize_base_params(
+                attributes=attributes,
+                n_alt=n_alt,
+                layers_dim=layers_dim,
+                regularizer=regularizer,
+                regularization_rate=regularization_rate,
+                learning_rate=learning_rate,
+                optimizer=optimizer,
+                loss=loss,
+                metrics=metrics,
+            )
         elif isinstance(filename, str):
             # Load model from file
             self.load(filename)
@@ -70,84 +112,64 @@ class BaseModel:
         if "warnings" in kwargs:
             warning_manager.set_show_warnings(kwargs.get("warnings", True))
 
-    def _initialize_base_params(self) -> None:
-        """Initialize the base parameters of the model."""
-        if self.params is None:
-            raise ValueError("No parameters provided. Please provide a dictionary with the model parameters.")
-        else:
-            params = self.params.copy()
+    def _initialize_base_params(self, **kwargs) -> None:
+        """Initialize the base parameters of the model.
 
-        if "attributes" not in params:
-            msg = (
-                "No 'attributes' parameter provided. Please provide a list with the attributes names, in the "
-                "same order as in the input data."
-            )
+        Args:
+            **kwargs: Additional arguments passed to the model.
+        """
+        self.attributes = kwargs["attributes"]
+        if self.attributes is None:
+            msg = "The 'attributes' parameter is required to initialize a new model."
             raise ValueError(msg)
-        if not isinstance(params["attributes"], list):
+        if not isinstance(self.attributes, list):
             msg = (
                 "The 'attributes' parameter should be a list with the attributes names, in the same order as in "
                 "the input data."
             )
             raise ValueError(msg)
-        for a in params["attributes"]:
+        for a in self.attributes:
             if not isinstance(a, str):
                 msg = "The elements of the 'attributes' list should be strings."
                 raise ValueError(msg)
 
-        if "n_alt" not in self.params:
-            msg = "No 'n_alt' parameter provided. Please provide the number of output features."
+        self.n_alt = kwargs["n_alt"]
+        if self.n_alt is None:
+            msg = "The 'n_alt' parameter is required to initialize a new model."
             raise ValueError(msg)
-        if not isinstance(self.params["n_alt"], int) or self.params["n_alt"] <= 1:
+        if not isinstance(self.n_alt, int) or self.n_alt <= 1:
             msg = "The 'n_alt' parameter should be a positive integer greater than 1."
             raise ValueError(msg)
 
-        if "layers_dim" not in self.params:
-            self.params["layers_dim"] = [25, 25]
-            msg = "No 'layers_dim' parameter provided. Using default value: [25, 25]."
-            warning_manager.warn(msg)
-        if not isinstance(self.params["layers_dim"], list):
+        self.layers_dim = kwargs["layers_dim"]
+        if not isinstance(self.layers_dim, list):
             msg = "The 'layers_dim' parameter should be a list with the number of neurons in each hidden layer, \" \
                 \"the length of the list is the number of hidden layers."
             raise ValueError(msg)
 
-        if "regularizer" not in self.params:
-            self.params["regularizer"] = None
-            msg = "No 'regularizer' parameter provided. Using default value: None."
-            warning_manager.warn(msg)
-        if self.params["regularizer"] is not None:
-            if not isinstance(self.params["regularizer"], str) or self.params["regularizer"] not in [
-                "l1",
-                "l2",
-                "l1_l2",
-            ]:
+        self.regularizer = kwargs["regularizer"]
+        if self.regularizer is not None:
+            if not isinstance(self.regularizer, str) or self.regularizer not in ["l1", "l2", "l1_l2"]:
                 msg = (
                     "The 'regularizer' parameter should be a string indicating the type of regularization: "
                     "'l1', 'l2' or 'l1_l2'."
                 )
                 raise ValueError(msg)
-            if "regularization_rate" not in self.params or self.params["regularization_rate"] is None:
-                self.params["regularization_rate"] = 0.001
-                msg = "No 'regularization_rate' parameter provided. Using default value: 0.001."
-                warning_manager.warn(msg)
-            if not isinstance(self.params["regularization_rate"], float) or self.params["regularization_rate"] <= 0:
-                msg = "The 'regularization_rate' parameter should be a positive float."
-                raise ValueError(msg)
 
-        if "learning_rate" not in self.params:
-            self.params["learning_rate"] = 0.001
-            msg = "No 'learning_rate' parameter provided. Using default value: 0.001."
-            warning_manager.warn(msg)
-        if not isinstance(self.params["learning_rate"], float) or self.params["learning_rate"] <= 0:
+        self.regularization_rate = kwargs["regularization_rate"]
+        if not isinstance(self.regularization_rate, float) or self.regularization_rate <= 0:
+            msg = "The 'regularization_rate' parameter should be a positive float."
+            raise ValueError(msg)
+
+        self.learning_rate = kwargs["learning_rate"]
+        if not isinstance(self.learning_rate, float) or self.learning_rate <= 0:
             msg = "The 'learning_rate' parameter should be a positive float."
             raise ValueError(msg)
 
-        if "optimizer" not in self.params:
-            self.params["optimizer"] = "adam"
-            msg = "No 'optimizer' parameter provided. Using default value: 'adam'."
-            warning_manager.warn(msg)
-        if isinstance(self.params["optimizer"], str):
+        self.optimizer = kwargs["optimizer"]
+        if isinstance(self.optimizer, str):
             # Search for the optimizer in the list of available optimizers, be case insensitive
-            optimizer = self.params["optimizer"].lower()
+            optimizer = self.optimizer.lower()
             if optimizer not in optimizers:
                 msg = (
                     "Optimizer '{}' not found in the list of available optimizers.\n"
@@ -155,33 +177,28 @@ class BaseModel:
                 )
                 raise ValueError(msg)
             else:
-                self.params["optimizer"] = optimizers[optimizer]
-        elif not issubclass(self.params["optimizer"], tf.keras.optimizers.Optimizer):
+                self.optimizer = optimizers[optimizer]
+        elif not issubclass(self.optimizer, tf.keras.optimizers.Optimizer):
             msg = "The 'optimizer' parameter should be either a string or a tf.keras.optimizers.Optimizer."
             raise ValueError(msg)
 
-        if "loss" not in self.params:
-            self.params["loss"] = "categorical_crossentropy"
-            msg = "No 'loss' parameter provided. Using default value: 'categorical_crossentropy'."
-            warning_manager.warn(msg)
-        if not isinstance(self.params["loss"], str) and not isinstance(self.params["loss"], tf.keras.losses.Loss):
+        self.loss = kwargs["loss"]
+        if not isinstance(self.loss, str) and not isinstance(self.loss, tf.keras.losses.Loss):
             msg = "The 'loss' parameter should be either a string or a tf.keras.losses.Loss."
             raise ValueError(msg)
 
-        if "metrics" not in self.params:
-            self.params["metrics"] = ["accuracy"]
-            msg = "No 'metrics' parameter provided. Using default value: ['accuracy']."
+        self.metrics = kwargs["metrics"]
+        if isinstance(self.metrics, str):
+            self.metrics = [self.metrics]
+            msg = "The 'metrics' parameter should be a list of strings. Converting to list with one element."
             warning_manager.warn(msg)
-        else:
-            if isinstance(self.params["metrics"], str):
-                self.params["metrics"] = [self.params["metrics"]]
 
     def _compile(self) -> None:
         """Compile the keras model."""
         # Define the optimizer
-        opt = self.params["optimizer"](learning_rate=self.params["learning_rate"])
+        opt = self.optimizer(learning_rate=self.learning_rate)
         # Compile the model
-        self.keras_model.compile(loss=self.params["loss"], optimizer=opt, metrics=["accuracy"])
+        self.keras_model.compile(loss=self.loss, optimizer=opt, metrics=["accuracy"])
 
     def _regularizer(self) -> tf.keras.regularizers.Regularizer:
         """Create a regularizer object based on the model parameters.
@@ -189,14 +206,14 @@ class BaseModel:
         Returns:
             Regularizer object.
         """
-        if self.params["regularizer"] is None:
+        if self.regularizer is None:
             return None
-        elif self.params["regularizer"] == "l1":
-            return l1(self.params["regularization_rate"])
-        elif self.params["regularizer"] == "l2":
-            return l2(self.params["regularization_rate"])
-        elif self.params["regularizer"] == "l1_l2":
-            return l1_l2(self.params["regularization_rate"])
+        elif self.regularizer == "l1":
+            return l1(self.regularization_rate)
+        elif self.regularizer == "l2":
+            return l2(self.regularization_rate)
+        elif self.regularizer == "l1_l2":
+            return l1_l2(self.regularization_rate)
 
     def summary(self) -> None:
         """Print a summary of the keras model."""
