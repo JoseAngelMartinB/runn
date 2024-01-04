@@ -1,5 +1,7 @@
 """RUNN: Random Utility Neural Network"""
 
+import os
+
 import tensorflow as tf
 
 __author__ = """José Ángel Martín Baos"""
@@ -17,5 +19,6 @@ def display_info():
     print("System information:")
     print("TensorFlow version: " + tf.__version__)
     print("Number of CPUs available: " + str(len(tf.config.experimental.list_physical_devices("CPU"))))
+    print("Number of CPU cores available: " + str(os.cpu_count()))
     print("Number of GPUs available: " + str(len(tf.config.experimental.list_physical_devices("GPU"))))
     print("-" * 80)

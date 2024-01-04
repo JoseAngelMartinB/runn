@@ -74,7 +74,6 @@ class DNN(BaseModel):
             optimizer=optimizer,
             loss=loss,
             metrics=metrics,
-            filename=filename,
             warnings=warnings,
         )
         if filename is None:
@@ -86,7 +85,8 @@ class DNN(BaseModel):
         """Initialize the parameters of the DNN model.
 
         Args:
-            **kwargs: Keyword arguments with the parameters to initialize.
+            **kwargs: Keyword arguments with the parameters to initialize. See the documentation of the class for more
+                details.
         """
         self.activation = kwargs["activation"]
         if isinstance(self.activation, str):
@@ -139,7 +139,7 @@ class DNN(BaseModel):
         # Softmax activation function to obtain the choice probabilities
         outputs = Activation("softmax", name="P")(u)
         # Create the model
-        self.keras_model = Model(inputs=inputs, outputs=outputs)
+        self.keras_model = Model(inputs=inputs, outputs=outputs, name="DNN")
 
     def save(self, path: str = "model.zip") -> None:
         """Save the model to a file.

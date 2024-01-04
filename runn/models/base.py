@@ -103,7 +103,7 @@ class BaseModel:
         """Initialize the base variables of the model.
 
         Args:
-            **kwargs: Additional arguments passed to the model.
+            **kwargs: Additional arguments passed to the model. See the documentation of the class for more details.
         """
         self.keras_model = None
         self.fitted = False
@@ -116,7 +116,7 @@ class BaseModel:
         """Initialize the base parameters of the model.
 
         Args:
-            **kwargs: Additional arguments passed to the model.
+            **kwargs: Additional arguments passed to the model. See the documentation of the class for more details.
         """
         self.attributes = kwargs["attributes"]
         if self.attributes is None:
@@ -143,8 +143,10 @@ class BaseModel:
 
         self.layers_dim = kwargs["layers_dim"]
         if not isinstance(self.layers_dim, list):
-            msg = "The 'layers_dim' parameter should be a list with the number of neurons in each hidden layer, \" \
-                \"the length of the list is the number of hidden layers."
+            msg = (
+                "The 'layers_dim' parameter should be a list with the number of neurons in each hidden layer, "
+                "the length of the list is the number of hidden layers."
+            )
             raise ValueError(msg)
 
         self.regularizer = kwargs["regularizer"]
@@ -215,11 +217,46 @@ class BaseModel:
         elif self.regularizer == "l1_l2":
             return l1_l2(self.regularization_rate)
 
-    def summary(self) -> None:
-        """Print a summary of the keras model."""
+    def summary(self, line_length: int = 100, **kwargs) -> None:
+        """Print a summary of the keras model.
+
+        Args:
+            line_length: Total length of printed lines. Default: 100.
+            **kwargs: Additional arguments passed to the keras model. See tf.keras.Model.summary() for details.
+        """
         if self.keras_model is None:
             raise Exception("Keras model is not initialized yet. Please initialize the model first.")
-        self.keras_model.summary()
+        print("------ {} ------".format(self.__class__.__name__))
+        self._print_data_summary(line_length=line_length)
+        print("\nSummary of the keras model:")
+        self.keras_model.summary(line_length=line_length, **kwargs)
+
+    def _print_data_summary(self, line_length: int = 100) -> None:
+        """Print a summary of the data used in the model.
+
+        Args:
+            line_length: Total length of printed lines. Default: 100.
+        """
+        print("\nSummary of the data used in the model:")
+        print(" - Attributes used in the model:")
+        # Break the attributes list into multiple lines if the line is too long (more than 100 characters).
+        # Try that every line is as close as possible to 80 characters.
+        attributes_str = ""
+        char_count = 0
+        for i, attr in enumerate(self.attributes):
+            if i == 0:
+                attributes_str += "    ["
+                attributes_str += attr
+                char_count += len(attr)
+            elif char_count + len(attr) + 6 < line_length:
+                attributes_str += ", " + attr
+                char_count += len(attr) + 2
+            else:
+                attributes_str += ",\n    " + attr
+                char_count = len(attr)
+        attributes_str += "]"
+        print(attributes_str)
+        print(" - Number of alternatives in the choice set: %d" % self.n_alt)
 
     def plot_model(self, filename: str = None, expand_nested=True, dpi: int = 96) -> None:
         """Generate a graphical representation of the model.
