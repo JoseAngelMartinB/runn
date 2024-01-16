@@ -40,7 +40,7 @@ def willingness_to_pay(
         )
 
     if isinstance(analysed_attribute, str) and isinstance(x, pd.DataFrame):
-        if analysed_attribute not in model.params["attributes"]:
+        if analysed_attribute not in model.attributes:
             raise ValueError("The analysed attribute is not present in the model.")
         analysed_attribute = x.columns.get_loc(analysed_attribute)
     elif not isinstance(analysed_attribute, int):
@@ -50,7 +50,7 @@ def willingness_to_pay(
         )
 
     if isinstance(cost_attribute, str) and isinstance(x, pd.DataFrame):
-        if cost_attribute not in model.params["attributes"]:
+        if cost_attribute not in model.attributes:
             raise ValueError("The cost attribute is not present in the model.")
         cost_attribute = x.columns.get_loc(cost_attribute)
     elif not isinstance(cost_attribute, int):
@@ -61,9 +61,9 @@ def willingness_to_pay(
 
     if analysed_attribute == cost_attribute:
         raise ValueError("The analysed attribute cannot be the same as the cost attribute.")
-    if analysed_attribute >= len(model.params["attributes"]):
+    if analysed_attribute >= len(model.attributes):
         raise ValueError("The analysed attribute index is out of range.")
-    if cost_attribute >= len(model.params["attributes"]):
+    if cost_attribute >= len(model.attributes):
         raise ValueError("The cost attribute index is out of range.")
 
     if isinstance(x, pd.DataFrame):
@@ -71,17 +71,32 @@ def willingness_to_pay(
     if isinstance(x, np.ndarray):
         x = tf.convert_to_tensor(x)
 
-    if alt >= model.params["n_alt"]:
+    if alt >= model.n_alt:
         raise ValueError("The alternative index is out of range.")
     if alt < 0:
         raise ValueError("The alternative index cannot be negative.")
 
-    # Compute the gradient of the utility function with respect to the analysed attributes using the tensorflow
-    with tf.GradientTape() as tape:
-        tape.watch(x)
-        pred_utility = model.get_utility(x)
-        pred_utility = pred_utility[:, alt]
-    grad = tape.gradient(pred_utility, x)
+    # Check if the model supports obtaining the utility function
+    compute_gradient_using_utility = True
+    try:
+        model.get_utility(tf.zeros((1, x.shape[1])))
+    except NotImplementedError:
+        compute_gradient_using_utility = False
+
+    if compute_gradient_using_utility:
+        # Compute the gradient of the utility function with respect to the analysed attributes using the tensorflow
+        with tf.GradientTape() as tape:
+            tape.watch(x)
+            pred_utility = model.get_utility(x)
+            pred_utility = pred_utility[:, alt]
+        grad = tape.gradient(pred_utility, x)
+    else:
+        # Compute the gradient of the probabilities with respect to the analysed attributes using the tensorflow
+        with tf.GradientTape() as tape:
+            tape.watch(x)
+            pred_probabilities = model(x)
+            pred_probabilities = pred_probabilities[:, alt]
+        grad = tape.gradient(pred_probabilities, x)
 
     grad_cost = grad[:, cost_attribute]
     grad_analysed_attr = grad[:, analysed_attribute]
@@ -93,14 +108,12 @@ def willingness_to_pay(
                 analysed_attr_scale = scaler.scale_[list(scaler.feature_names_in_).index(analysed_attribute)]
             else:
                 analysed_attr_scale = scaler.scale_[
-                    list(scaler.feature_names_in_).index(model.params["attributes"][analysed_attribute])
+                    list(scaler.feature_names_in_).index(model.attributes[analysed_attribute])
                 ]
             if isinstance(cost_attribute, str):
                 cost_attr_scale = scaler.scale_[list(scaler.feature_names_in_).index(cost_attribute)]
             else:
-                cost_attr_scale = scaler.scale_[
-                    list(scaler.feature_names_in_).index(model.params["attributes"][cost_attribute])
-                ]
+                cost_attr_scale = scaler.scale_[list(scaler.feature_names_in_).index(model.attributes[cost_attribute])]
             grad_analysed_attr = grad_analysed_attr / analysed_attr_scale
             grad_cost = grad_cost / cost_attr_scale
         elif type(scaler) is MinMaxScaler:

@@ -74,6 +74,7 @@ class DNN(BaseModel):
             optimizer=optimizer,
             loss=loss,
             metrics=metrics,
+            filename=filename,
             warnings=warnings,
         )
         if filename is None:
