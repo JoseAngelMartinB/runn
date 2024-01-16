@@ -301,6 +301,8 @@ class BaseModel:
         epochs: int = 1,
         verbose: int = 1,
         callbacks: Optional[list] = None,
+        validation_split: float = 0.0,
+        validation_data: Optional[tuple] = None,
         **kwargs,
     ) -> tf.keras.callbacks.History:
         """Train the model.
@@ -314,6 +316,13 @@ class BaseModel:
             verbose: Verbosity mode. 0 = silent, 1 = progress bar, 2 = one line per epoch. Default: 1.
             callbacks: List of tf.keras.callbacks.Callback instances. List of callbacks to apply during training.
                 See tf.keras.callbacks for details. Default: None.
+            validation_split: Float between 0 and 1. Fraction of the training data to be used as validation data.
+                The model will set apart this fraction of the training data, will not train on it, and will evaluate
+                the loss and any model metrics on this data at the end of each epoch. The validation data is selected
+                from the last samples in the x and y data provided, before shuffling. Default: 0.0.
+            validation_data: Data on which to evaluate the loss and any model metrics at the end of each epoch. The
+                model will not be trained on this data. This could be a tuple (x_val, y_val) or a tuple (x_val, y_val,
+                val_sample_weights). Default: None.
             **kwargs: Additional arguments passed to the keras model. See tf.keras.Model.fit() for details.
 
         Returns:
@@ -321,7 +330,9 @@ class BaseModel:
             and metrics values at successive epochs, as well as validation loss values and validation metrics values
             (if applicable).
         """
-        self.history = self.keras_model.fit(x, y, batch_size, epochs, verbose, callbacks, **kwargs)
+        self.history = self.keras_model.fit(
+            x, y, batch_size, epochs, verbose, callbacks, validation_split, validation_data, **kwargs
+        )
         self.fitted = True
         return self.history
 
