@@ -192,15 +192,25 @@ class BaseModel:
         self.metrics = kwargs["metrics"]
         if isinstance(self.metrics, str):
             self.metrics = [self.metrics]
-            msg = "The 'metrics' parameter should be a list of strings. Converting to list with one element."
+            msg = (
+                "The 'metrics' parameter should be a list of strings or tf.keras.metrics.Metric. Converting it to "
+                "a list with a single element."
+            )
             warning_manager.warn(msg)
+        elif not isinstance(self.metrics, list):
+            msg = "The 'metrics' parameter should be a list of strings or tf.keras.metrics.Metric."
+            raise ValueError(msg)
+        for metric in self.metrics:
+            if not isinstance(metric, str) and not isinstance(metric, tf.keras.metrics.Metric):
+                msg = "The elements of the 'metrics' list should be either strings or tf.keras.metrics.Metric."
+                raise ValueError(msg)
 
     def _compile(self) -> None:
         """Compile the keras model."""
         # Define the optimizer
         opt = self.optimizer(learning_rate=self.learning_rate)
         # Compile the model
-        self.keras_model.compile(loss=self.loss, optimizer=opt, metrics=["accuracy"])
+        self.keras_model.compile(loss=self.loss, optimizer=opt, metrics=self.metrics)
 
     def _regularizer(self) -> tf.keras.regularizers.Regularizer:
         """Create a regularizer object based on the model parameters.
@@ -293,7 +303,7 @@ class BaseModel:
         callbacks: Optional[list] = None,
         **kwargs,
     ) -> tf.keras.callbacks.History:
-        """Train the model for a fixed number of epochs (iterations on a dataset).
+        """Train the model.
 
         Args:
             x: Input data.
