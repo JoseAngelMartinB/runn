@@ -1,5 +1,5 @@
 """Tests for `runn.metrics` module."""
-from typing import Union
+from typing import Optional, Union
 
 import numpy as np
 import pandas as pd
@@ -13,9 +13,10 @@ from runn import econometric_indicators
 
 # Define a dummy model
 class DummyModel:
-    def __init__(self, params: dict = None, filename: str = None) -> None:
+    def __init__(self, attributes: Optional[list] = None, n_alt: Optional[int] = None, filename: str = None) -> None:
         """Dummy model for testing purposes."""
-        self.params = params
+        self.attributes = attributes
+        self.n_alt = n_alt
         self.filename = filename
         self._build()
         self._compile()
@@ -51,7 +52,7 @@ def test_willingness_to_pay():
     """Test the willingness_to_pay function."""
     # Define a dummy model
     params = {"attributes": ["a", "b", "c"], "n_alt": 3}
-    model = DummyModel(params)
+    model = DummyModel(**params)
 
     # Define the input data
     x = np.array([[1.0, 2.5, 3], [4, 1, 6], [9, -2.1, -3], [1, 0, 3.4], [7, 8, 9]])
@@ -71,7 +72,7 @@ def test_value_of_time():
     """Test the value_of_time function."""
     # Define a dummy model
     params = {"attributes": ["a", "b", "c"], "n_alt": 3}
-    model = DummyModel(params)
+    model = DummyModel(**params)
 
     # Define the input data
     x = np.array([[1.0, 2.5, 3], [4, 1, 6], [9, -2.1, -3], [1, 0, 3.4], [7, 8, 9]])
