@@ -99,6 +99,21 @@ class BaseModel:
         else:
             raise ValueError("The 'filename' parameter should be a string.")
 
+    def __call__(self, x: tf.Tensor, **kwargs) -> tf.Tensor:
+        """Call the model on new inputs and returns the output as tensors.
+
+        In this case call() just reapplies all ops in the graph to the new inputs (e.g. build a new computational graph
+        from the provided inputs). See tf.keras.Model.call() for details.
+
+        Args:
+            x: Input data. It must be a tf.Tensor. If the model has multiple inputs, x must be a list of tf.Tensor.
+            **kwargs: Additional arguments passed to the keras model. See tf.keras.Model.__call__() for details.
+
+        Returns:
+            Output tensor(s). See model predict() method for details.
+        """
+        return self.keras_model(x, **kwargs)
+
     def _initialize_base_variables(self, **kwargs) -> None:
         """Initialize the base variables of the model.
 
@@ -296,7 +311,7 @@ class BaseModel:
     def fit(
         self,
         x: Union[tf.Tensor, np.ndarray, pd.DataFrame],
-        y: Union[tf.Tensor, np.ndarray, pd.DataFrame],
+        y: Union[tf.Tensor, np.ndarray],
         batch_size: Optional[int] = None,
         epochs: int = 1,
         verbose: int = 1,
@@ -308,8 +323,8 @@ class BaseModel:
         """Train the model.
 
         Args:
-            x: Input data.
-            y: Target data.
+            x: Input data. Can be a tf.Tensor, np.ndarray or pd.DataFrame.
+            y: Target data. Can be either a tf.Tensor or np.ndarray.
             batch_size: Number of samples per gradient update. If unspecified, batch_size will default to 32.
             epochs: Number of epochs to train the model. An epoch is an iteration over the entire x and y data
                 provided. Default: 1.
@@ -355,13 +370,13 @@ class BaseModel:
         return self.keras_model.predict(x, **kwargs)
 
     def evaluate(
-        self, x: Union[tf.Tensor, np.ndarray, pd.DataFrame], y: Union[tf.Tensor, np.ndarray, pd.DataFrame], **kwargs
+        self, x: Union[tf.Tensor, np.ndarray, pd.DataFrame], y: Union[tf.Tensor, np.ndarray], **kwargs
     ) -> Union[float, list]:
         """Returns the loss value & metrics values for the model for a given input.
 
         Args:
-            x: Input data.
-            y: Target data.
+            x: Input data. Can be a tf.Tensor, np.ndarray or pd.DataFrame.
+            y: Target data. Can be either a tf.Tensor or np.ndarray.
             **kwargs: Additional arguments passed to the keras model. See tf.keras.Model.evaluate() for details.
 
         Returns:
