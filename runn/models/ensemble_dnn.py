@@ -1,5 +1,9 @@
+import datetime
+import json
 import os
+import pickle
 from typing import Optional, Union
+from zipfile import ZipFile
 
 import numpy as np
 import pandas as pd
@@ -7,8 +11,9 @@ import tensorflow as tf
 from tensorflow.keras.layers import Average, Input
 from tensorflow.keras.models import Model
 
+import runn
 from runn.models.dnn import DNN
-from runn.utils import ProgressBar, WarningManager
+from runn.utils import IncompatibleVersionError, NotSupportedError, ProgressBar, WarningManager
 
 # Initialize the warning manager
 warning_manager = WarningManager()
@@ -149,9 +154,11 @@ class EnsembleDNN(DNN):
         # Average the output of the individual DNN models
         average_outputs = Average(name="P")(
             [
-                Model(inputs=self.ensemble_pool[i].keras_model.input, outputs=self.ensemble_pool[i].keras_model.output)(
-                    inputs
-                )
+                Model(
+                    inputs=self.ensemble_pool[i].keras_model.input,
+                    outputs=self.ensemble_pool[i].keras_model.output,
+                    name="DNN_{}".format(i + 1),
+                )(inputs)
                 for i in range(self.n_ensembles)
             ]
         )
@@ -214,7 +221,7 @@ class EnsembleDNN(DNN):
     def fit(
         self,
         x: Union[tf.Tensor, np.ndarray, pd.DataFrame],
-        y: Union[tf.Tensor, np.ndarray, pd.DataFrame],
+        y: Union[tf.Tensor, np.ndarray],
         batch_size: Optional[int] = None,
         epochs: int = 1,
         verbose: int = 1,
@@ -227,8 +234,8 @@ class EnsembleDNN(DNN):
         """Train the ensemble model.
 
          Args:
-            x: Input data.
-            y: Target data.
+            x: Input data. It can be a tf.Tensor, np.ndarray or pd.DataFrame.
+            y: Target data. It can be either a tf.Tensor or np.ndarray.
             batch_size: Number of samples per gradient update. If unspecified, batch_size will default to 32.
             epochs: Number of epochs to train the model. An epoch is an iteration over the entire x and y data
                 provided. Default: 1.
@@ -354,10 +361,168 @@ class EnsembleDNN(DNN):
         return self.ensemble_history
 
     def save(self, path: str = "model.zip") -> None:
-        raise NotImplementedError()
+        """Save the model to a file.
+
+        Args:
+            path: Path to the file where the model will be saved. Default: 'model.zip'.
+        """
+        if not isinstance(path, str):
+            raise ValueError("The 'path' parameter should be a string.")
+        if path[-4:] != ".zip":
+            path += ".zip"
+        aux_files = path[:-4]
+
+        files = []
+        # Save model info as json
+        model_info = {
+            "model": "EnsembleDNN",
+            "runn_version": runn.__version__,
+            "creation_date": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+            "fitted": self.fitted,
+        }
+        with open(aux_files + "_info.json", "w") as f:
+            json.dump(model_info, f)
+        files.append(aux_files + "_info.json")
+
+        # Save the parameters of the model
+        # Save all the parameters of the model in a pickle file except the keras model
+        pickle.dump(
+            [
+                self.attributes,
+                self.n_alt,
+                self.n_ensembles,
+                self.layers_dim,
+                self.activation,
+                self.regularizer,
+                self.regularization_rate,
+                self.dropout,
+                self.batch_norm,
+                self.learning_rate,
+                self.optimizer,
+                self.loss,
+                self.metrics,
+                self.n_jobs,
+            ],
+            open(aux_files + "_params.pkl", "wb"),
+        )
+        files.append(aux_files + "_params.pkl")
+
+        # Save the keras ensemble model
+        self.keras_model.save_weights(aux_files + "_model.h5")
+        files.append(aux_files + "_model.h5")
+
+        # Save the individual DNN models
+        for i in range(self.n_ensembles):
+            self.ensemble_pool[i].save(aux_files + "_DNN_model_{}.zip".format(i + 1))
+            files.append(aux_files + "_DNN_model_{}.zip".format(i + 1))
+
+        # Save the history
+        pickle.dump(self.history, open(aux_files + "_history.pkl", "wb"))
+        files.append(aux_files + "_history.pkl")
+
+        # Compress all the files
+        with ZipFile(path, "w") as zip:
+            for file in files:
+                zip.write(file, os.path.basename(file))
+
+        # Delete the auxiliary files
+        for file in files:
+            os.remove(file)
 
     def load(self, path: str) -> None:
-        raise NotImplementedError()
+        """Load the model from a file.
+
+        Args:
+            path: Path to the file where the model is saved.
+        """
+        if not isinstance(path, str):
+            raise ValueError("The 'path' parameter should be a string.")
+        # Check that the str ends with .zip
+        if not path.endswith(".zip"):
+            raise ValueError("The 'path' parameter should be a .zip file.")
+        else:
+            # Remove the .zip extension
+            aux_files = path[:-4]
+            # Get the last index of the '/' character
+            idx = aux_files.rfind("/")
+            # Get the name of the file without the path
+            aux_name = aux_files[idx + 1 :]
+
+        try:
+            # Extract the files inside an temporal auxiliary folder
+            os.mkdir(aux_files)
+            with ZipFile(path, "r") as zip:
+                zip.extractall(path=aux_files)
+
+            # Load model info
+            with open(aux_files + "/" + aux_name + "_info.json", "r") as f:
+                model_info = json.load(f)
+            if model_info["model"] != "EnsembleDNN":
+                msg = (
+                    "The model in the file is not a EnsembleDNN model. The model cannot be loaded.",
+                    "Please try using the '{}' model instead.",
+                ).format(model_info["model"])
+                raise ValueError(msg)
+
+            # Check runn version
+            major, minor, patch = model_info["runn_version"].split(".")
+            if (
+                int(major) > int(runn.__version__.split(".")[0])
+                or (
+                    int(major) == int(runn.__version__.split(".")[0])
+                    and int(minor) > int(runn.__version__.split(".")[1])
+                )
+                or (
+                    int(major) == int(runn.__version__.split(".")[0])
+                    and int(minor) == int(runn.__version__.split(".")[1])
+                    and int(patch) > int(runn.__version__.split(".")[2])
+                )
+            ):
+                msg = (
+                    "The model was created with a newer version of runn ({}). "
+                    "Please update runn to version {} or higher.".format(model_info["runn_version"], runn.__version__)
+                )
+                raise IncompatibleVersionError(msg)
+
+            # Load the parameters of the model
+            (
+                self.attributes,
+                self.n_alt,
+                self.n_ensembles,
+                self.layers_dim,
+                self.activation,
+                self.regularizer,
+                self.regularization_rate,
+                self.dropout,
+                self.batch_norm,
+                self.learning_rate,
+                self.optimizer,
+                self.loss,
+                self.metrics,
+                self.n_jobs,
+            ) = pickle.load(open(aux_files + "/" + aux_name + "_params.pkl", "rb"))
+
+            # Load the individual DNN models
+            self.ensemble_pool = []
+            for i in range(self.n_ensembles):
+                self.ensemble_pool.append(
+                    DNN(filename=aux_files + "/" + aux_name + "_DNN_model_{}.zip".format(i + 1), warnings=False)
+                )
+
+            # Load the ensemble keras model
+            self._build()
+            self.keras_model.load_weights(aux_files + "/" + aux_name + "_model.h5")
+
+            # Load the history
+            self.history = pickle.load(open(aux_files + "/" + aux_name + "_history.pkl", "rb"))
+            self.fitted = model_info["fitted"]
+        except Exception as e:
+            raise e
+        finally:
+            # Delete the auxiliary folder
+            for file in os.listdir(aux_files):
+                os.remove(aux_files + "/" + file)
+            os.rmdir(aux_files)
 
     def get_utility(self, x: Union[tf.Tensor, np.ndarray, pd.DataFrame]) -> np.ndarray:
         """Get the utility of each alternative for a given set of observations.
@@ -369,4 +534,4 @@ class EnsembleDNN(DNN):
             Numpy array with the utility of each alternative for each observation in the input data.
         """
         # This method is not supported for ensemble models
-        raise NotImplementedError("This method is not supported for ensemble models.")
+        raise NotSupportedError("This method is not supported for ensemble models.")
