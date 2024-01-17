@@ -13,7 +13,7 @@ from tensorflow.keras.models import Model
 
 import runn
 from runn.models.base import BaseModel
-from runn.utils import WarningManager
+from runn.utils import IncompatibleVersionError, WarningManager
 
 # Initialize the warning manager
 warning_manager = WarningManager()
@@ -150,7 +150,7 @@ class DNN(BaseModel):
         """
         if not isinstance(path, str):
             raise ValueError("The 'path' parameter should be a string.")
-        if path[-3:] != ".zip":
+        if path[-4:] != ".zip":
             path += ".zip"
         aux_files = path[:-4]
 
@@ -233,7 +233,11 @@ class DNN(BaseModel):
             with open(aux_files + "/" + aux_name + "_info.json", "r") as f:
                 model_info = json.load(f)
             if model_info["model"] != "DNN":
-                raise ValueError("The model in the file is not a DNN model.")
+                msg = (
+                    "The model in the file is not a DNN model. The model cannot be loaded.",
+                    "Please try using the '{}' model instead.",
+                ).format(model_info["model"])
+                raise ValueError(msg)
 
             # Check runn version
             major, minor, patch = model_info["runn_version"].split(".")
@@ -253,7 +257,7 @@ class DNN(BaseModel):
                     "The model was created with a newer version of runn ({}). "
                     "Please update runn to version {} or higher.".format(model_info["runn_version"], runn.__version__)
                 )
-                warning_manager.warn(msg)
+                raise IncompatibleVersionError(msg)
 
             # Load the parameters of the model
             (

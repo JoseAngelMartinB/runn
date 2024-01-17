@@ -3,6 +3,18 @@ import time
 import warnings
 
 
+class IncompatibleVersionError(Exception):
+    """Raised when the version of runn used to create the model is not compatible with the current version."""
+
+    pass
+
+
+class NotSupportedError(Exception):
+    """Raised when a not supported operation for a given model is called."""
+
+    pass
+
+
 class WarningManager:
     """Singleton class to manage warnings."""
 

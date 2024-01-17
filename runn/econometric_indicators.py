@@ -9,6 +9,7 @@ import tensorflow as tf
 from sklearn.preprocessing import MinMaxScaler, StandardScaler
 
 from runn.models.base import BaseModel
+from runn.utils import NotSupportedError
 
 
 def willingness_to_pay(
@@ -80,7 +81,7 @@ def willingness_to_pay(
     compute_gradient_using_utility = True
     try:
         model.get_utility(tf.zeros((1, x.shape[1])))
-    except NotImplementedError:
+    except NotSupportedError:
         compute_gradient_using_utility = False
 
     if compute_gradient_using_utility:
