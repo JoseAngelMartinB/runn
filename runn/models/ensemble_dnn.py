@@ -235,7 +235,9 @@ class EnsembleDNN(DNN):
 
          Args:
             x: Input data. It can be a tf.Tensor, np.ndarray or pd.DataFrame.
-            y: Target data. It can be either a tf.Tensor or np.ndarray.
+            y: The alternative selected by each decision maker in the sample x. Can be either a tf.Tensor or np.ndarray.
+                It should be a 1D array with integers in the range [0, n_alt-1] or a 2D array with one-hot encoded
+                alternatives.
             batch_size: Number of samples per gradient update. If unspecified, batch_size will default to 32.
             epochs: Number of epochs to train the model. An epoch is an iteration over the entire x and y data
                 provided. Default: 1.
@@ -260,6 +262,7 @@ class EnsembleDNN(DNN):
             record of training loss values and metrics values at successive epochs, as well as validation loss values
             and validation metrics values (if applicable).
         """
+        # Check if the ensemble model has been initialized
         if self.ensemble_pool is None or len(self.ensemble_pool) == 0:
             msg = "The individual DNN models have not been initialized yet. Please initialize the ensemble model first."
             raise ValueError(msg)
@@ -267,6 +270,15 @@ class EnsembleDNN(DNN):
             x = x.values
         if isinstance(x, np.ndarray):
             x = tf.convert_to_tensor(x)
+
+        # Check if y is one-hot encoded or a 1D array with integers in the range [0, n_alt-1]
+        if isinstance(y, tf.Tensor):
+            y = y.numpy()
+        if not (len(y.shape) == 2 and y.shape[1] == self.n_alt):
+            # y is not one-hot encoded, hence it should be a 1D array with integers in the range [0, n_alt-1]
+            if np.any(y < 0) or np.any(y >= self.n_alt):
+                raise ValueError("The input parameter 'y' should contain integers in the range [0, n_alt-1].")
+
         if bagging is not None:
             # Use bagging
             if not isinstance(bagging, float):

@@ -324,7 +324,9 @@ class BaseModel:
 
         Args:
             x: Input data. Can be a tf.Tensor, np.ndarray or pd.DataFrame.
-            y: Target data. Can be either a tf.Tensor or np.ndarray.
+            y: The alternative selected by each decision maker in the sample x. Can be either a tf.Tensor or np.ndarray.
+                It should be a 1D array with integers in the range [0, n_alt-1] or a 2D array with one-hot encoded
+                alternatives.
             batch_size: Number of samples per gradient update. If unspecified, batch_size will default to 32.
             epochs: Number of epochs to train the model. An epoch is an iteration over the entire x and y data
                 provided. Default: 1.
@@ -345,6 +347,17 @@ class BaseModel:
             and metrics values at successive epochs, as well as validation loss values and validation metrics values
             (if applicable).
         """
+        # Check if the model is initialized
+        if self.keras_model is None:
+            raise ValueError("The model is not initialized yet. Please initialize the model first.")
+        # Check if y is one-hot encoded or a 1D array with integers in the range [0, n_alt-1]
+        if isinstance(y, tf.Tensor):
+            y = y.numpy()
+        if not (len(y.shape) == 2 and y.shape[1] == self.n_alt):
+            # y is not one-hot encoded, hence it should be a 1D array with integers in the range [0, n_alt-1]
+            if np.any(y < 0) or np.any(y >= self.n_alt):
+                raise ValueError("The input parameter 'y' should contain integers in the range [0, n_alt-1].")
+
         self.history = self.keras_model.fit(
             x, y, batch_size, epochs, verbose, callbacks, validation_split, validation_data, **kwargs
         )
@@ -376,7 +389,9 @@ class BaseModel:
 
         Args:
             x: Input data. Can be a tf.Tensor, np.ndarray or pd.DataFrame.
-            y: Target data. Can be either a tf.Tensor or np.ndarray.
+            y: The alternative selected by each decision maker in the sample x. Can be either a tf.Tensor or np.ndarray.
+                It should be a 1D array with integers in the range [0, n_alt-1] or a 2D array with one-hot encoded
+                alternatives.
             **kwargs: Additional arguments passed to the keras model. See tf.keras.Model.evaluate() for details.
 
         Returns:
@@ -389,6 +404,13 @@ class BaseModel:
             x = x.values
         if isinstance(x, np.ndarray):
             x = tf.convert_to_tensor(x)
+        # Check if y is one-hot encoded or a 1D array with integers in the range [0, n_alt-1]
+        if isinstance(y, tf.Tensor):
+            y = y.numpy()
+        if not (len(y.shape) == 2 and y.shape[1] == self.n_alt):
+            # y is not one-hot encoded, hence it should be a 1D array with integers in the range [0, n_alt-1]
+            if np.any(y < 0) or np.any(y >= self.n_alt):
+                raise ValueError("The input parameter 'y' should contain integers in the range [0, n_alt-1].")
         return self.keras_model.evaluate(x, y, **kwargs)
 
     @abstractmethod
