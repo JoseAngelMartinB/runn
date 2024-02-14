@@ -235,8 +235,8 @@ class DNN(BaseModel):
             if model_info["model"] != "DNN":
                 msg = (
                     "The model in the file is not a DNN model. The model cannot be loaded.",
-                    "Please try using the '{}' model instead.",
-                ).format(model_info["model"])
+                    "Please try using the '{}' model instead.".format(model_info["model"]),
+                )
                 raise ValueError(msg)
 
             # Check runn version

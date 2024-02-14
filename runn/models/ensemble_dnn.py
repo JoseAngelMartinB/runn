@@ -303,7 +303,6 @@ class EnsembleDNN(DNN):
             print("Estimating the individual DNN models...")
 
         # Fit the ensemble model
-        self.ensemble_history = []
         for i in range(self.n_ensembles):
             if verbose > 1:
                 print("\n------ DNN model {} ------".format(i + 1))
@@ -312,37 +311,36 @@ class EnsembleDNN(DNN):
             else:
                 x_i, y_i = x, y
             # Fit the individual DNN model
-            self.ensemble_history.append(
-                self.ensemble_pool[i].fit(
-                    x=x_i,
-                    y=y_i,
-                    batch_size=batch_size,
-                    epochs=epochs,
-                    verbose=verbose - 1,
-                    callbacks=callbacks,
-                    validation_split=validation_split,
-                    validation_data=validation_data,
-                    **kwargs,
-                )
+            self.ensemble_pool[i].fit(
+                x=x_i,
+                y=y_i,
+                batch_size=batch_size,
+                epochs=epochs,
+                verbose=verbose - 1,
+                callbacks=callbacks,
+                validation_split=validation_split,
+                validation_data=validation_data,
+                **kwargs,
             )
+
             # Update the progress bar or print the verbose output
             if verbose == 1:
-                pb_value_dict = {"loss": "{:.4f}".format(self.ensemble_history[i].history["loss"][-1])}
+                pb_value_dict = {"loss": "{:.4f}".format(self.ensemble_pool[i].get_history()["loss"][-1])}
                 for metric in self.metrics:
-                    pb_value_dict[metric] = "{:.4f}".format(self.ensemble_history[i].history[metric][-1])
+                    pb_value_dict[metric] = "{:.4f}".format(self.ensemble_pool[i].get_history()[metric][-1])
                 pb.update(i + 1, value_dict=pb_value_dict)
             elif verbose > 1:
-                verbose_output = "Training - loss: {:.4f}".format(self.ensemble_history[i].history["loss"][-1])
+                verbose_output = "Training - loss: {:.4f}".format(self.ensemble_pool[i].get_history()["loss"][-1])
                 for metric in self.metrics:
-                    verbose_output += " - {}: {:.4f}".format(metric, self.ensemble_history[i].history[metric][-1])
+                    verbose_output += " - {}: {:.4f}".format(metric, self.ensemble_pool[i].get_history()[metric][-1])
                 print(verbose_output)
                 if validation_data is not None or validation_split > 0.0:
                     verbose_output = "Validation - loss: {:.4f}".format(
-                        self.ensemble_history[i].history["val_loss"][-1]
+                        self.ensemble_pool[i].get_history()["val_loss"][-1]
                     )
                     for metric in self.metrics:
                         verbose_output += " - {}: {:.4f}".format(
-                            metric, self.ensemble_history[i].history["val_" + metric][-1]
+                            metric, self.ensemble_pool[i].get_history()["val_" + metric][-1]
                         )
                     print(verbose_output)
 
@@ -369,8 +367,19 @@ class EnsembleDNN(DNN):
                     verbose_output += " - {}: {:.4f}".format(metric, ensemble_metrics[metric])
                 print(verbose_output)
 
-        # Return the training history of each individual DNN model
-        return self.ensemble_history
+    def get_history(self) -> list[dict]:
+        """Return the history of the model training for each individual DNN model.
+
+        Returns:
+            List of dictionaries with the history of the training of each individual DNN model.
+        """
+        if not self.fitted:
+            msg = "The model has not been fitted yet. Please call the 'fit' method first."
+            raise ValueError(msg)
+        history = []
+        for i in range(self.n_ensembles):
+            history.append(self.ensemble_pool[i].get_history())
+        return history
 
     def save(self, path: str = "model.zip") -> None:
         """Save the model to a file.
@@ -472,8 +481,8 @@ class EnsembleDNN(DNN):
             if model_info["model"] != "EnsembleDNN":
                 msg = (
                     "The model in the file is not a EnsembleDNN model. The model cannot be loaded.",
-                    "Please try using the '{}' model instead.",
-                ).format(model_info["model"])
+                    "Please try using the '{}' model instead.".format(model_info["model"]),
+                )
                 raise ValueError(msg)
 
             # Check runn version

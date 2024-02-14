@@ -319,7 +319,7 @@ class BaseModel:
         validation_split: float = 0.0,
         validation_data: Optional[tuple] = None,
         **kwargs,
-    ) -> tf.keras.callbacks.History:
+    ) -> None:
         """Train the model.
 
         Args:
@@ -341,11 +341,6 @@ class BaseModel:
                 model will not be trained on this data. This could be a tuple (x_val, y_val) or a tuple (x_val, y_val,
                 val_sample_weights). Default: None.
             **kwargs: Additional arguments passed to the keras model. See tf.keras.Model.fit() for details.
-
-        Returns:
-            A tf.keras.callbacks.History object. Its History.history attribute is a record of training loss values
-            and metrics values at successive epochs, as well as validation loss values and validation metrics values
-            (if applicable).
         """
         # Check if the model is initialized
         if self.keras_model is None:
@@ -358,10 +353,20 @@ class BaseModel:
             if np.any(y < 0) or np.any(y >= self.n_alt):
                 raise ValueError("The input parameter 'y' should contain integers in the range [0, n_alt-1].")
 
-        self.history = self.keras_model.fit(
+        history = self.keras_model.fit(
             x, y, batch_size, epochs, verbose, callbacks, validation_split, validation_data, **kwargs
         )
+        self.history = history.history
         self.fitted = True
+
+    def get_history(self) -> dict:
+        """Return the history of the model training.
+
+        Returns:
+            A dictionary containing the loss and metrics values at the end of each epoch.
+        """
+        if self.history is None:
+            raise Exception("The model is not fitted yet. Please call fit() first.")
         return self.history
 
     def predict(self, x: Union[tf.Tensor, np.ndarray, pd.DataFrame], **kwargs) -> np.ndarray:
