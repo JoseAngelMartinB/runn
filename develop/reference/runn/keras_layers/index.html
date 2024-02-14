@@ -13,22 +13,22 @@
       
       
       
-        <link rel="prev" href="../../utils/">
+        <link rel="prev" href="../econometric_indicators/">
       
       
-        <link rel="next" href="../altspec_nn/">
+        <link rel="next" href="../metrics/">
       
       
-      <link rel="icon" href="../../../../assets/images/favicon.png">
+      <link rel="icon" href="../../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.9">
     
     
       
-        <title>runn.models.altspec_mono_nn - RUNN (Random Utility Neural Network)</title>
+        <title>runn.keras_layers - RUNN (Random Utility Neural Network)</title>
       
     
     
-      <link rel="stylesheet" href="../../../../assets/stylesheets/main.f2e4d321.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.f2e4d321.min.css">
       
       
 
@@ -47,11 +47,11 @@
       
     
     
-      <link rel="stylesheet" href="../../../../assets/_mkdocstrings.css">
+      <link rel="stylesheet" href="../../../assets/_mkdocstrings.css">
     
-      <link rel="stylesheet" href="../../../../static/extras.css">
+      <link rel="stylesheet" href="../../../static/extras.css">
     
-    <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -70,7 +70,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#runn.models.altspec_mono_nn.warning_manager" class="md-skip">
+        <a href="#runn.keras_layers.Gather" class="md-skip">
           Skip to content
         </a>
       
@@ -90,7 +90,7 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="../../../.." title="RUNN (Random Utility Neural Network)" class="md-header__button md-logo" aria-label="RUNN (Random Utility Neural Network)" data-md-component="logo">
+    <a href="../../.." title="RUNN (Random Utility Neural Network)" class="md-header__button md-logo" aria-label="RUNN (Random Utility Neural Network)" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
@@ -110,7 +110,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              runn.models.altspec_mono_nn
+              runn.keras_layers
             
           </span>
         </div>
@@ -197,7 +197,7 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../../../.." title="RUNN (Random Utility Neural Network)" class="md-nav__button md-logo" aria-label="RUNN (Random Utility Neural Network)" data-md-component="logo">
+    <a href="../../.." title="RUNN (Random Utility Neural Network)" class="md-nav__button md-logo" aria-label="RUNN (Random Utility Neural Network)" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
@@ -227,7 +227,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../.." class="md-nav__link">
+      <a href="../../.." class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -247,7 +247,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../installation/" class="md-nav__link">
+      <a href="../../../installation/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -306,7 +306,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../examples/1_intro_to_runn/" class="md-nav__link">
+      <a href="../../../examples/1_intro_to_runn/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -334,7 +334,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../contributing/" class="md-nav__link">
+      <a href="../../../contributing/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -354,7 +354,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../CHANGELOG/" class="md-nav__link">
+      <a href="../../../CHANGELOG/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -466,7 +466,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../econometric_indicators/" class="md-nav__link">
+      <a href="../econometric_indicators/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -484,10 +484,28 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../../keras_layers/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    runn.keras_layers
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   <span class="md-ellipsis">
@@ -496,6 +514,75 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#runn.keras_layers.Gather" class="md-nav__link">
+    <span class="md-ellipsis">
+      Gather
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Gather">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#runn.keras_layers.Gather.axis" class="md-nav__link">
+    <span class="md-ellipsis">
+      axis
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#runn.keras_layers.Gather.indices" class="md-nav__link">
+    <span class="md-ellipsis">
+      indices
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#runn.keras_layers.Gather.call" class="md-nav__link">
+    <span class="md-ellipsis">
+      call
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#runn.keras_layers.Gather.get_config" class="md-nav__link">
+    <span class="md-ellipsis">
+      get_config
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -508,7 +595,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../metrics/" class="md-nav__link">
+      <a href="../metrics/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -529,7 +616,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../plot_model/" class="md-nav__link">
+      <a href="../plot_model/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -550,7 +637,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../utils/" class="md-nav__link">
+      <a href="../utils/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -568,10 +655,8 @@
                 
   
   
-    
   
   
-  
     
     
       
@@ -590,11 +675,11 @@
     
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_1_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_1_6" >
         
           
           <label class="md-nav__link" for="__nav_6_1_6" id="__nav_6_1_6_label" tabindex="0">
@@ -608,7 +693,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_6_1_6_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_6_1_6_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_6_1_6">
             <span class="md-nav__icon md-icon"></span>
             runn.models
@@ -619,28 +704,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  <span class="md-ellipsis">
-    runn.models.altspec_mono_nn
-  </span>
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../models/altspec_mono_nn/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -649,42 +716,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#runn.models.altspec_mono_nn.warning_manager" class="md-nav__link">
-    <span class="md-ellipsis">
-      warning_manager
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#runn.models.altspec_mono_nn.AltSpecMonoNN" class="md-nav__link">
-    <span class="md-ellipsis">
-      AltSpecMonoNN
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -697,7 +728,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../altspec_nn/" class="md-nav__link">
+      <a href="../models/altspec_nn/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -718,7 +749,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../base/" class="md-nav__link">
+      <a href="../models/base/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -739,7 +770,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../dnn/" class="md-nav__link">
+      <a href="../models/dnn/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -760,7 +791,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../ensemble_dnn/" class="md-nav__link">
+      <a href="../models/ensemble_dnn/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -781,7 +812,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../runn/" class="md-nav__link">
+      <a href="../models/runn/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -843,20 +874,53 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#runn.models.altspec_mono_nn.warning_manager" class="md-nav__link">
+  <a href="#runn.keras_layers.Gather" class="md-nav__link">
     <span class="md-ellipsis">
-      warning_manager
+      Gather
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Gather">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#runn.keras_layers.Gather.axis" class="md-nav__link">
+    <span class="md-ellipsis">
+      axis
     </span>
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#runn.models.altspec_mono_nn.AltSpecMonoNN" class="md-nav__link">
+        
+          <li class="md-nav__item">
+  <a href="#runn.keras_layers.Gather.indices" class="md-nav__link">
     <span class="md-ellipsis">
-      AltSpecMonoNN
+      indices
     </span>
   </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#runn.keras_layers.Gather.call" class="md-nav__link">
+    <span class="md-ellipsis">
+      call
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#runn.keras_layers.Gather.get_config" class="md-nav__link">
+    <span class="md-ellipsis">
+      get_config
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -881,7 +945,7 @@
   
 
 
-  <h1>runn.models.altspec_mono_nn</h1>
+  <h1>runn.keras_layers</h1>
 
 <div class="doc doc-object doc-module">
 
@@ -900,42 +964,23 @@
 
 
 
-<div class="doc doc-object doc-attribute">
-
-
-
-<h2 id="runn.models.altspec_mono_nn.warning_manager" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">warning_manager</span> <span class="o">=</span> <span class="n">WarningManager</span><span class="p">()</span></code>
-  
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-module-attribute"><code>module-attribute</code></small>
-  </span>
-
-<a href="#runn.models.altspec_mono_nn.warning_manager" class="headerlink" title="Permanent link">#</a></h2>
-
-
-  <div class="doc doc-contents ">
-  </div>
-
-</div>
-
 
 <div class="doc doc-object doc-class">
 
 
 
-<h2 id="runn.models.altspec_mono_nn.AltSpecMonoNN" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">AltSpecMonoNN</span><span class="p">(</span><span class="n">params</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+<h2 id="runn.keras_layers.Gather" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">Gather</span><span class="p">(</span><span class="n">indices</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
 
-<a href="#runn.models.altspec_mono_nn.AltSpecMonoNN" class="headerlink" title="Permanent link">#</a></h2>
+<a href="#runn.keras_layers.Gather" class="headerlink" title="Permanent link">#</a></h2>
 
 
   <div class="doc doc-contents ">
           <p class="doc doc-class-bases">
-            Bases: <code><a class="autorefs autorefs-internal" title="runn.models.base.BaseModel" href="../base/#runn.models.base.BaseModel">BaseModel</a></code></p>
+            Bases: <code><span title="tensorflow.keras.layers.Layer">Layer</span></code></p>
 
   
-      <p>Alternative-specific monotonic neural network model for choice modeling.</p>
+      <p>Custom layer to gather the elements of a tensor based on an index tensor.</p>
 
 
 
@@ -948,19 +993,33 @@
     </thead>
     <tbody>
         <tr>
-          <td><code>params</code></td>
+          <td><code>indices</code></td>
           <td class="doc-param-details">
             <div class="doc-md-description">
-              <p>Dictionary with the model parameters.</p>
+              <p>A tensor with the indices of the elements to gather.</p>
             </div>
             <p>
                 <span class="doc-param-annotation">
                   <b>TYPE:</b>
-                    <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#dict">dict</a></code>
+                    <code><span title="tensorflow.Tensor">Tensor</span></code>
+                </span>
+            </p>
+          </td>
+        </tr>
+        <tr>
+          <td><code>axis</code></td>
+          <td class="doc-param-details">
+            <div class="doc-md-description">
+              <p>The axis along which to gather the elements. Default: 1.</p>
+            </div>
+            <p>
+                <span class="doc-param-annotation">
+                  <b>TYPE:</b>
+                    <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></code>
                 </span>
                 <span class="doc-param-default">
                   <b>DEFAULT:</b> 
-                    <code>None</code>
+                    <code>1</code>
                 </span>
             </p>
           </td>
@@ -969,22 +1028,14 @@
   </table>
 
                 <details class="quote">
-                  <summary>Source code in <code>runn/models/altspec_mono_nn.py</code></summary>
-                  <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-9"> 9</a></span>
-<span class="normal"><a href="#__codelineno-0-10">10</a></span>
-<span class="normal"><a href="#__codelineno-0-11">11</a></span>
-<span class="normal"><a href="#__codelineno-0-12">12</a></span>
+                  <summary>Source code in <code>runn/keras_layers.py</code></summary>
+                  <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-12">12</a></span>
 <span class="normal"><a href="#__codelineno-0-13">13</a></span>
 <span class="normal"><a href="#__codelineno-0-14">14</a></span>
-<span class="normal"><a href="#__codelineno-0-15">15</a></span>
-<span class="normal"><a href="#__codelineno-0-16">16</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9"></a><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">params</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Alternative-specific monotonic neural network model for choice modeling.</span>
-</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11"></a>
-</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12"></a><span class="sd">    Args:</span>
-</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13"></a><span class="sd">        params: Dictionary with the model parameters.</span>
-</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14"></a><span class="sd">    &quot;&quot;&quot;</span>
-</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15"></a>
-</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16"></a>    <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+<span class="normal"><a href="#__codelineno-0-15">15</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12"></a><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">indices</span><span class="p">:</span> <span class="n">tf</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">axis</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13"></a>    <span class="nb">super</span><span class="p">(</span><span class="n">Gather</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14"></a>    <span class="bp">self</span><span class="o">.</span><span class="n">indices</span> <span class="o">=</span> <span class="n">indices</span>
+</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15"></a>    <span class="bp">self</span><span class="o">.</span><span class="n">axis</span> <span class="o">=</span> <span class="n">axis</span>
 </span></code></pre></div></td></tr></table></div>
                 </details>
 
@@ -998,7 +1049,99 @@
 
 
 
+<div class="doc doc-object doc-attribute">
 
+
+
+<h3 id="runn.keras_layers.Gather.axis" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">axis</span> <span class="o">=</span> <span class="n">axis</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#runn.keras_layers.Gather.axis" class="headerlink" title="Permanent link">#</a></h3>
+
+
+  <div class="doc doc-contents ">
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="runn.keras_layers.Gather.indices" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">indices</span> <span class="o">=</span> <span class="n">indices</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#runn.keras_layers.Gather.indices" class="headerlink" title="Permanent link">#</a></h3>
+
+
+  <div class="doc doc-contents ">
+  </div>
+
+</div>
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h3 id="runn.keras_layers.Gather.call" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">call</span><span class="p">(</span><span class="n">inputs</span><span class="p">)</span></code>
+
+<a href="#runn.keras_layers.Gather.call" class="headerlink" title="Permanent link">#</a></h3>
+
+
+  <div class="doc doc-contents ">
+
+          <details class="quote">
+            <summary>Source code in <code>runn/keras_layers.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-17">17</a></span>
+<span class="normal"><a href="#__codelineno-0-18">18</a></span>
+<span class="normal"><a href="#__codelineno-0-19">19</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17"></a><span class="k">def</span> <span class="nf">call</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputs</span><span class="p">:</span> <span class="n">tf</span><span class="o">.</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">tf</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+</span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18"></a>    <span class="c1"># Perform the gather operation</span>
+</span><span id="__span-0-19"><a id="__codelineno-0-19" name="__codelineno-0-19"></a>    <span class="k">return</span> <span class="n">tf</span><span class="o">.</span><span class="n">gather</span><span class="p">(</span><span class="n">inputs</span><span class="p">,</span> <span class="n">indices</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">indices</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">axis</span><span class="p">)</span>
+</span></code></pre></div></td></tr></table></div>
+          </details>
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h3 id="runn.keras_layers.Gather.get_config" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">get_config</span><span class="p">()</span></code>
+
+<a href="#runn.keras_layers.Gather.get_config" class="headerlink" title="Permanent link">#</a></h3>
+
+
+  <div class="doc doc-contents ">
+
+          <details class="quote">
+            <summary>Source code in <code>runn/keras_layers.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-21">21</a></span>
+<span class="normal"><a href="#__codelineno-0-22">22</a></span>
+<span class="normal"><a href="#__codelineno-0-23">23</a></span>
+<span class="normal"><a href="#__codelineno-0-24">24</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-21"><a id="__codelineno-0-21" name="__codelineno-0-21"></a><span class="k">def</span> <span class="nf">get_config</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+</span><span id="__span-0-22"><a id="__codelineno-0-22" name="__codelineno-0-22"></a>    <span class="n">config</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">Gather</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">get_config</span><span class="p">()</span>
+</span><span id="__span-0-23"><a id="__codelineno-0-23" name="__codelineno-0-23"></a>    <span class="n">config</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s2">&quot;indices&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">indices</span><span class="p">,</span> <span class="s2">&quot;axis&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">axis</span><span class="p">})</span>
+</span><span id="__span-0-24"><a id="__codelineno-0-24" name="__codelineno-0-24"></a>    <span class="k">return</span> <span class="n">config</span>
+</span></code></pre></div></td></tr></table></div>
+          </details>
+  </div>
+
+</div>
 
 
 
@@ -1064,10 +1207,10 @@
     </div>
     
     
-    <script id="__config" type="application/json">{"base": "../../../..", "features": ["navigation.indexes"], "search": "../../../../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
+    <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.indexes"], "search": "../../../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
     
     
-      <script src="../../../../assets/javascripts/bundle.8fd75fb4.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.8fd75fb4.min.js"></script>
       
     
   </body>
