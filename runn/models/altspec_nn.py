@@ -12,7 +12,7 @@ from tensorflow.keras.layers import Activation, BatchNormalization, Dense, Dropo
 from tensorflow.keras.models import Model
 
 import runn
-from runn.keras_layers import Gather
+from runn.keras.layers import Gather
 from runn.models.dnn import DNN
 from runn.utils import IncompatibleVersionError, WarningManager
 
