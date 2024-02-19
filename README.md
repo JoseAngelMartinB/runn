@@ -36,6 +36,7 @@ cd runn
 mamba create -n runn -c conda-forge --file requirements/base.txt --file requirements/dev.txt
 mamba activate runn
 pip install --no-deps -e .
+python -m ipykernel install --user --name runn
 ```
 <!--- --8<-- [end:docs-install-dev] -->
 This will install ruun in editable mode. For more detailed instructions, see our [documentation](http://runn.joseangelmartin.com/latest/installation/).
