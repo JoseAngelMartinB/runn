@@ -189,13 +189,17 @@ class BaseModel:
             optimizer = self.optimizer.lower()
             if optimizer not in optimizers:
                 msg = (
-                    "Optimizer '{}' not found in the list of available optimizers.\n"
-                    "Available optimizers: {}".format(optimizer, list(optimizers.keys()))
+                    "Optimizer '{}' not found in the list of available optimizers.\n" "Available optimizers: {}".format(
+                        optimizer, list(optimizers.keys())
+                    )
                 )
                 raise ValueError(msg)
             else:
                 self.optimizer = optimizers[optimizer]
-        elif not issubclass(self.optimizer, tf.keras.optimizers.Optimizer):
+        elif not (
+            issubclass(self.optimizer, tf.keras.optimizers.Optimizer)
+            or issubclass(self.optimizer, tf.keras.optimizers.legacy.Optimizer)
+        ):
             msg = "The 'optimizer' parameter should be either a string or a tf.keras.optimizers.Optimizer."
             raise ValueError(msg)
 

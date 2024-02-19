@@ -3,3 +3,4 @@ pandas
 tensorflow
 scikit-learn
 pydot
+pyarrow
