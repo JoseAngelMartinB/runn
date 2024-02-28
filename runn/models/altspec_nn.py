@@ -151,8 +151,10 @@ class AltSpecNN(DNN):
         # Input layer
         input_shape = (len(self.attributes),)
         inputs = Input(shape=input_shape, name="features")
-        # Shared attributes layer (shared and socio-economic attributes)
-        x_shared = Gather(self.shared_attrs_idx + self.socioec_attrs_idx, axis=1, name="shared_attrs")(inputs)
+        # Extract the shared attributes
+        x_shared = Gather(self.shared_attrs_idx, axis=1, name="shared_attrs")(inputs)
+        # Extract the socio-economic attributes
+        x_socioec = Gather(self.socioec_attrs_idx, axis=1, name="socioec_attrs")(inputs)
 
         # Construct the utility of each alternative
         utilities = []
@@ -161,7 +163,7 @@ class AltSpecNN(DNN):
             x_alt_spec = Gather(self.alt_spec_attrs_idx[alt], axis=1, name="alt_spec_attrs_{}".format(alt))(inputs)
 
             # Define the alternative-specific utility block for the current alternative
-            utilities.append(self._build_alt_utility_block(x_shared, x_alt_spec, alt))
+            utilities.append(self._build_alt_utility_block(x_alt_spec, x_shared, x_socioec, alt))
 
         # Concatenate the utilities of all alternatives
         u = concatenate(utilities, axis=1, name="U")
@@ -170,16 +172,19 @@ class AltSpecNN(DNN):
         # Create the model
         self.keras_model = Model(inputs=inputs, outputs=outputs, name="AltSpecNN")
 
-    def _build_alt_utility_block(self, x_shared: tf.Tensor, x_alt_spec: tf.Tensor, alt: int) -> None:
+    def _build_alt_utility_block(
+        self, x_alt_spec: tf.Tensor, x_shared: tf.Tensor, x_socioec: tf.Tensor, alt: int
+    ) -> tf.Tensor:
         """Build the architecture of the alternative-specific utility block.
 
         Args:
-            x_shared: Tensor with the shared attributes.
             x_alt_spec: Tensor with the alternative-specific attributes.
+            x_shared: Tensor with the shared attributes.
+            x_socioec: Tensor with the socio-economic attributes.
             alt: Index of the alternative for which the utility block will be built.
         """
-        # Concatenate the shared and alternative-specific attributes
-        x = concatenate([x_shared, x_alt_spec], axis=1, name="Attrs_alt_{}".format(alt))
+        # Concatenate the alternative-specific, shared, and socio-economic attributes
+        x = concatenate([x_alt_spec, x_shared, x_socioec], axis=1, name="Attrs_alt_{}".format(alt))
 
         # Hidden layers
         for L in range(0, len(self.layers_dim)):
