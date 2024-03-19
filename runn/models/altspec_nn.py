@@ -360,11 +360,16 @@ class AltSpecNN(DNN):
                 os.remove(aux_files + "/" + file)
             os.rmdir(aux_files)
 
-    def get_utility(self, x: Union[tf.Tensor, np.ndarray, pd.DataFrame]) -> np.ndarray:
+    def get_utility(
+            self,
+            x: Union[tf.Tensor, np.ndarray, pd.DataFrame],
+            name: str = "AltSpecNN_Utility",
+        ) -> np.ndarray:
         """Get the utility of each alternative for a given set of observations.
 
         Args:
             x: The input data. It can be a tf.Tensor, np.ndarray or pd.DataFrame.
+            name: Name of the utility model. Default: 'AltSpecNN_Utility'.
 
         Returns:
             Numpy array with the utility of each alternative for each observation in the input data.
@@ -377,5 +382,5 @@ class AltSpecNN(DNN):
         if isinstance(x, np.ndarray):
             x = tf.convert_to_tensor(x)
 
-        utility_model = Model(inputs=self.keras_model.input, outputs=self.keras_model.get_layer("U").output)
+        utility_model = Model(inputs=self.keras_model.input, outputs=self.keras_model.get_layer("U").output, name=name)
         return utility_model(x)

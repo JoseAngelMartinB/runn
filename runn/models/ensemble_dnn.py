@@ -23,31 +23,31 @@ class EnsembleDNN(DNN):
     """Ensemble of deep neural network models for choice modeling.
 
     Args:
-    attributes: List with the attributes names in the model, in the same order as in the input data. If None, the
-        model cannot be initialized unless it is loaded from a file. Default: None.
-    n_alt: Number of alternatives in the choice set. If None, the model cannot be initialized unless it is loaded
-        from a file. Default: None.
-    n_ensembles: Number of base DNN models in the ensemble. This value should be greater than 1. Default: 5.
-    layers_dim: List with the number of neurons in each hidden layer, the length of the list is the number of
-        hidden layers. Default: [25, 25].
-    activation: Activation function to use in the hidden layers. Can be either a string or a list of strings.
-        See https://keras.io/api/layers/activations/ for the available activations. Default: 'relu'.
-    regularizer: Type of regularization to apply. Possible values: 'l1', 'l2' or 'l1_l2'. Default: None.
-    regularization_rate: Regularization rate if regularizer is not None. Default: 0.001.
-    learning_rate: Learning rate of the optimizer. Default: 0.001.
-    dropout: Dropout rate to use in the hidden layers. Can be either a float or a list of floats. If a float is
-        provided, the same dropout rate will be used in all the hidden layers. Default: 0.0.
-    batch_norm: Whether to use batch normalization or not. Default: False.
-    optimizer: Optimizer to use. Can be either a string or a tf.keras.optimizers.Optimizer. Default: 'adam'.
-    loss: Loss function to use. Can be either a string or a tf.keras.losses.Loss. Default:
-        'categorical_crossentropy'.
-    metrics: List of metrics to be evaluated by the model during training and testing. Each of this can be either
-        a string or a tf.keras.metrics.Metric. Default: ['accuracy'].
-    n_jobs: Number of parallel jobs to run. If -1, all CPUs are used. If 1 is given, no parallel computing code
-        is used at all, which is useful for debugging. For n_jobs below -1, (n_cpus + 1 + n_jobs) are used.
-    filename: Load a previously trained model from a file. If None, a new model will be initialized. When loading
-        a model from a file, the previous parameters will be ignored. Default: None.
-    warnings: Whether to show warnings or not. Default: True.
+        attributes: List with the attributes names in the model, in the same order as in the input data. If None, the
+            model cannot be initialized unless it is loaded from a file. Default: None.
+        n_alt: Number of alternatives in the choice set. If None, the model cannot be initialized unless it is loaded
+            from a file. Default: None.
+        n_ensembles: Number of base DNN models in the ensemble. This value should be greater than 1. Default: 5.
+        layers_dim: List with the number of neurons in each hidden layer, the length of the list is the number of
+            hidden layers. Default: [25, 25].
+        activation: Activation function to use in the hidden layers. Can be either a string or a list of strings.
+            See https://keras.io/api/layers/activations/ for the available activations. Default: 'relu'.
+        regularizer: Type of regularization to apply. Possible values: 'l1', 'l2' or 'l1_l2'. Default: None.
+        regularization_rate: Regularization rate if regularizer is not None. Default: 0.001.
+        learning_rate: Learning rate of the optimizer. Default: 0.001.
+        dropout: Dropout rate to use in the hidden layers. Can be either a float or a list of floats. If a float is
+            provided, the same dropout rate will be used in all the hidden layers. Default: 0.0.
+        batch_norm: Whether to use batch normalization or not. Default: False.
+        optimizer: Optimizer to use. Can be either a string or a tf.keras.optimizers.Optimizer. Default: 'adam'.
+        loss: Loss function to use. Can be either a string or a tf.keras.losses.Loss. Default:
+            'categorical_crossentropy'.
+        metrics: List of metrics to be evaluated by the model during training and testing. Each of this can be either
+            a string or a tf.keras.metrics.Metric. Default: ['accuracy'].
+        n_jobs: Number of parallel jobs to run. If -1, all CPUs are used. If 1 is given, no parallel computing code
+            is used at all, which is useful for debugging. For n_jobs below -1, (n_cpus + 1 + n_jobs) are used.
+        filename: Load a previously trained model from a file. If None, a new model will be initialized. When loading
+            a model from a file, the previous parameters will be ignored. Default: None.
+        warnings: Whether to show warnings or not. Default: True.
     """
 
     def __init__(
@@ -545,11 +545,16 @@ class EnsembleDNN(DNN):
                 os.remove(aux_files + "/" + file)
             os.rmdir(aux_files)
 
-    def get_utility(self, x: Union[tf.Tensor, np.ndarray, pd.DataFrame]) -> np.ndarray:
+    def get_utility(
+            self,
+            x: Union[tf.Tensor, np.ndarray, pd.DataFrame],
+            name: str = "EnsembleDNN_Utility",
+        ) -> np.ndarray:
         """Get the utility of each alternative for a given set of observations.
 
         Args:
             x: The input data. It can be a tf.Tensor, np.ndarray or pd.DataFrame.
+            name: Name of the utility model. Default: 'EnsembleDNN_Utility'.
 
         Returns:
             Numpy array with the utility of each alternative for each observation in the input data.

@@ -87,7 +87,7 @@ class AltSpecMonoNN(DNN):
         filename: Optional[str] = None,
         warnings: bool = True,
     ) -> None:
-        # Initialize the parameters of the base class
+        # Initialize the parameters of the base class (calls the __init__ method of the BaseModel class).
         super(DNN, self).__init__(
             attributes=attributes,
             n_alt=n_alt,
@@ -279,7 +279,7 @@ class AltSpecMonoNN(DNN):
         # Softmax activation function to obtain the choice probabilities
         outputs = Activation("softmax", name="P")(u)
         # Create the model
-        self.keras_model = Model(inputs=inputs, outputs=outputs, name="AltSpecNN")
+        self.keras_model = Model(inputs=inputs, outputs=outputs, name="AltSpecMonoNN")
 
     def _build_alt_utility_block(
         self, x_alt_spec: tf.Tensor, x_shared: tf.Tensor, x_socioec: tf.Tensor, alt: int
@@ -428,7 +428,7 @@ class AltSpecMonoNN(DNN):
                 model_info = json.load(f)
             if model_info["model"] != "AltSpecMonoNN":
                 msg = (
-                    "The model in the file is not a 'AltSpecNN' model. The model cannot be loaded.",
+                    "The model in the file is not a 'AltSpecMonoNN' model. The model cannot be loaded.",
                     "Please try using the '{}' model instead.".format(model_info["model"]),
                 )
                 raise ValueError(msg)
@@ -494,11 +494,16 @@ class AltSpecMonoNN(DNN):
                 os.remove(aux_files + "/" + file)
             os.rmdir(aux_files)
 
-    def get_utility(self, x: Union[tf.Tensor, np.ndarray, pd.DataFrame]) -> np.ndarray:
+    def get_utility(
+        self,
+        x: Union[tf.Tensor, np.ndarray, pd.DataFrame],
+        name: str = "AltSpecMonoNN_Utility",
+    ) -> np.ndarray:
         """Get the utility of each alternative for a given set of observations.
 
         Args:
             x: The input data. It can be a tf.Tensor, np.ndarray or pd.DataFrame.
+            name: Name of the utility model. Default: 'AltSpecMonoNN_Utility'.
 
         Returns:
             Numpy array with the utility of each alternative for each observation in the input data.
@@ -511,5 +516,5 @@ class AltSpecMonoNN(DNN):
         if isinstance(x, np.ndarray):
             x = tf.convert_to_tensor(x)
 
-        utility_model = Model(inputs=self.keras_model.input, outputs=self.keras_model.get_layer("U").output)
+        utility_model = Model(inputs=self.keras_model.input, outputs=self.keras_model.get_layer("U").output, name=name)
         return utility_model(x)

@@ -435,5 +435,5 @@ class BaseModel:
         raise NotImplementedError
 
     @abstractmethod
-    def get_utility(self, x: Union[tf.Tensor, np.ndarray, pd.DataFrame]) -> np.ndarray:
+    def get_utility(self, x: Union[tf.Tensor, np.ndarray, pd.DataFrame], name: str) -> np.ndarray:
         raise NotImplementedError
