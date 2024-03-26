@@ -86,24 +86,7 @@ class EnsembleDNN(DNN):
             self._initialize_dnn_params(activation=activation, dropout=dropout, batch_norm=batch_norm)
             self._initialize_ensemble_params(n_ensembles=n_ensembles, n_jobs=n_jobs)
             # Initialize the DNN models and store them in a list
-            self.ensemble_pool = []
-            for i in range(self.n_ensembles):
-                self.ensemble_pool.append(
-                    DNN(
-                        attributes=self.attributes,
-                        n_alt=self.n_alt,
-                        layers_dim=self.layers_dim,
-                        activation=self.activation,
-                        regularizer=self.regularizer,
-                        regularization_rate=self.regularization_rate,
-                        dropout=self.dropout,
-                        batch_norm=self.batch_norm,
-                        learning_rate=self.learning_rate,
-                        optimizer=self.optimizer,
-                        loss=self.loss,
-                        metrics=self.metrics,
-                    )
-                )
+            self._initialize_ensemble_pool()
         elif isinstance(filename, str):
             # Load model from file
             self.load(filename)
@@ -145,6 +128,44 @@ class EnsembleDNN(DNN):
                 "Setting 'n_jobs' to %d." % (n_cpus, n_cpus)
             )
             warning_manager.warn(msg)
+
+    def _initialize_ensemble_pool(self, filename_list: Optional[list[str]] = None) -> None:
+        """Initialize the ensemble pool of DNN models.
+        
+        Args:
+            filename_list: List with the filenames of the individual DNN models to load. If None, the ensemble pool will
+                be initialized from scratch. Default: None.
+        """
+        self.ensemble_pool = []
+        if filename_list is not None:
+            # Load the individual DNN models from the files
+            if not isinstance(filename_list, list):
+                msg = "The 'filename_list' parameter should be a list of strings or None."
+                raise ValueError(msg)
+            if len(filename_list) != self.n_ensembles:
+                msg = "The number of filenames in 'filename_list' should be equal to 'n_ensembles'."
+                raise ValueError(msg)
+            for i in range(self.n_ensembles):
+                self.ensemble_pool.append(DNN(filename=filename_list[i], warnings=False))
+        else:
+            # Initialize the individual DNN models from scratch
+            for i in range(self.n_ensembles):
+                self.ensemble_pool.append(
+                    DNN(
+                        attributes=self.attributes,
+                        n_alt=self.n_alt,
+                        layers_dim=self.layers_dim,
+                        activation=self.activation,
+                        regularizer=self.regularizer,
+                        regularization_rate=self.regularization_rate,
+                        dropout=self.dropout,
+                        batch_norm=self.batch_norm,
+                        learning_rate=self.learning_rate,
+                        optimizer=self.optimizer,
+                        loss=self.loss,
+                        metrics=self.metrics,
+                    )
+                )
 
     def _build(self) -> None:
         """Build the architecture of the ensemble DNN model."""
@@ -302,7 +323,7 @@ class EnsembleDNN(DNN):
         elif verbose > 1:
             print("Estimating the individual DNN models...")
 
-        # Fit the ensemble model
+        # Fit the ensemble models
         for i in range(self.n_ensembles):
             if verbose > 1:
                 print("\n------ DNN model {} ------".format(i + 1))
@@ -382,7 +403,7 @@ class EnsembleDNN(DNN):
         return history
 
     def save(self, path: str = "model.zip") -> None:
-        """Save the model to a file.
+        """Save the model to a file. The model must be fitted before saving it.
 
         Args:
             path: Path to the file where the model will be saved. Default: 'model.zip'.
@@ -434,8 +455,8 @@ class EnsembleDNN(DNN):
 
         # Save the individual DNN models
         for i in range(self.n_ensembles):
-            self.ensemble_pool[i].save(aux_files + "_DNN_model_{}.zip".format(i + 1))
-            files.append(aux_files + "_DNN_model_{}.zip".format(i + 1))
+            self.ensemble_pool[i].save(aux_files + "_DNN_model_{}.zip".format(i+1))
+            files.append(aux_files + "_DNN_model_{}.zip".format(i+1))
 
         # Save the history
         pickle.dump(self.history, open(aux_files + "_history.pkl", "wb"))
@@ -524,12 +545,11 @@ class EnsembleDNN(DNN):
             ) = pickle.load(open(aux_files + "/" + aux_name + "_params.pkl", "rb"))
 
             # Load the individual DNN models
-            self.ensemble_pool = []
-            for i in range(self.n_ensembles):
-                self.ensemble_pool.append(
-                    DNN(filename=aux_files + "/" + aux_name + "_DNN_model_{}.zip".format(i + 1), warnings=False)
-                )
-
+            self._initialize_ensemble_pool(
+                filename_list=[
+                    aux_files + "/" + aux_name + "_DNN_model_{}.zip".format(i+1) for i in range(self.n_ensembles)
+                ]
+            )
             # Load the ensemble keras model
             self._build()
             self.keras_model.load_weights(aux_files + "/" + aux_name + "_model.h5")

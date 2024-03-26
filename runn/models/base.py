@@ -370,7 +370,7 @@ class BaseModel:
             A dictionary containing the loss and metrics values at the end of each epoch.
         """
         if self.history is None:
-            raise Exception("The model is not fitted yet. Please call fit() first.")
+            raise Exception("The model is not fitted yet. Please call the 'fit' method first.")
         return self.history
 
     def predict(self, x: Union[tf.Tensor, np.ndarray, pd.DataFrame], **kwargs) -> np.ndarray:
@@ -384,7 +384,7 @@ class BaseModel:
             Numpy array with the choice probabilities for each alternative.
         """
         if self.fitted is False:
-            raise Exception("The model is not fitted yet. Please call fit() first.")
+            raise Exception("The model is not fitted yet. Please call the 'fit' method first.")
         if isinstance(x, pd.DataFrame):
             x = x.values
         if isinstance(x, np.ndarray):
@@ -408,7 +408,7 @@ class BaseModel:
             multiple outputs and/or metrics). See tf.keras.Model.evaluate() for details.
         """
         if self.fitted is False:
-            raise Exception("The model is not fitted yet. Please call fit() first.")
+            raise Exception("The model is not fitted yet. Please call the 'fit' method first.")
         if isinstance(x, pd.DataFrame):
             x = x.values
         if isinstance(x, np.ndarray):

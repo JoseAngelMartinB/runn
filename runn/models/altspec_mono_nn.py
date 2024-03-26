@@ -333,7 +333,7 @@ class AltSpecMonoNN(DNN):
         return utility
 
     def save(self, path: str = "model.zip") -> None:
-        """Save the model to a file.
+        """Save the model to a file. The model must be fitted before saving it.
 
         Args:
             path: Path to the file where the model will be saved. Default: 'model.zip'.
@@ -343,6 +343,9 @@ class AltSpecMonoNN(DNN):
         if path[-4:] != ".zip":
             path += ".zip"
         aux_files = path[:-4]
+        if not self.fitted or self.keras_model is None:
+            msg = "The model has not been fitted yet. Please call the 'fit' method first."
+            raise ValueError(msg)
 
         files = []
         # Save model info as json
@@ -509,7 +512,7 @@ class AltSpecMonoNN(DNN):
             Numpy array with the utility of each alternative for each observation in the input data.
         """
         if self.fitted is False:
-            raise Exception("The model is not fitted yet. Please call fit() first.")
+            raise Exception("The model is not fitted yet. Please call the 'fit' method first.")
 
         if isinstance(x, pd.DataFrame):
             x = x.values
