@@ -8,16 +8,14 @@ from zipfile import ZipFile
 import numpy as np
 import pandas as pd
 import tensorflow as tf
-from tensorflow.keras.layers import Average, Input, Activation
+from tensorflow.keras.layers import Activation, Average, Input
 from tensorflow.keras.models import Model
 
 import runn
-from runn.models.base import BaseModel
-from runn.models.dnn import DNN
-from runn.models.altspec_nn import AltSpecNN
 from runn.models.altspec_mono_nn import AltSpecMonoNN
-from runn.utils import IncompatibleVersionError, NotSupportedError, ProgressBar, WarningManager
-
+from runn.models.altspec_nn import AltSpecNN
+from runn.models.dnn import DNN
+from runn.utils import IncompatibleVersionError, ProgressBar, WarningManager
 
 # Initialize the warning manager
 warning_manager = WarningManager()

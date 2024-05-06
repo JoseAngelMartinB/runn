@@ -8,7 +8,7 @@ from zipfile import ZipFile
 import numpy as np
 import pandas as pd
 import tensorflow as tf
-from tensorflow.keras.layers import Activation, BatchNormalization, Dense, Dropout, Input, concatenate
+from tensorflow.keras.layers import Activation, BatchNormalization, Dropout, Input, concatenate
 from tensorflow.keras.models import Model
 
 import runn
