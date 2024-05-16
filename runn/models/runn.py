@@ -250,22 +250,22 @@ class RUNN(AltSpecMonoNN, AltSpecNN, DNN):
                 elif base_model == "AltSpecMonoNN":
                     self.ensemble_pool.append(
                         AltSpecMonoNN(
-                            attributes=self.attributes,
-                            n_alt=self.n_alt,
-                            alt_spec_attrs=self.alt_spec_attrs,
-                            shared_attrs=self.shared_attrs,
-                            socioec_attrs=self.socioec_attrs,
-                            monotonicity_constraints=self.monotonicity_constraints,
-                            layers_dim=self.layers_dim,
-                            activation=self.activation,
-                            regularizer=self.regularizer,
-                            regularization_rate=self.regularization_rate,
-                            dropout=self.dropout,
-                            batch_norm=self.batch_norm,
-                            learning_rate=self.learning_rate,
-                            optimizer=self.optimizer,
-                            loss=self.loss,
-                            metrics=self.metrics,
+                            attributes=deepcopy(self.attributes),
+                            n_alt=deepcopy(self.n_alt),
+                            alt_spec_attrs=deepcopy(self.alt_spec_attrs),
+                            shared_attrs=deepcopy(self.shared_attrs),
+                            socioec_attrs=deepcopy(self.socioec_attrs),
+                            monotonicity_constraints=deepcopy(self.monotonicity_constraints),
+                            layers_dim=deepcopy(self.layers_dim),
+                            activation=deepcopy(self.activation),
+                            regularizer=deepcopy(self.regularizer),
+                            regularization_rate=deepcopy(self.regularization_rate),
+                            dropout=deepcopy(self.dropout),
+                            batch_norm=deepcopy(self.batch_norm),
+                            learning_rate=deepcopy(self.learning_rate),
+                            optimizer=deepcopy(self.optimizer),
+                            loss=deepcopy(self.loss),
+                            metrics=deepcopy(self.metrics),
                         )
                     )
 
@@ -425,48 +425,50 @@ class RUNN(AltSpecMonoNN, AltSpecNN, DNN):
 
         # Fit the individual base models in parallel
         with ThreadPoolExecutor(max_workers=self.n_jobs) as executor:
-            futures = [
-                executor.submit(
-                    self._fit_ensemble,
-                    i,
-                    x,
-                    y,
-                    batch_size,
-                    epochs,
-                    verbose,
-                    callbacks,
-                    validation_split,
-                    validation_data,
-                    bootstrap_x,
-                    bootstrap_y,
-                    **kwargs,
+            futures = []
+            for i in range(self.n_ensembles):
+                if bagging is not None:
+                    x_i, y_i = bootstrap_x[i], bootstrap_y[i]
+                else:
+                    x_i, y_i = x, y
+
+                futures.append(
+                    executor.submit(
+                        self.ensemble_pool[i].fit,
+                        x=x_i,
+                        y=y_i,
+                        batch_size=batch_size,
+                        epochs=epochs,
+                        verbose=verbose - 1 if verbose > 0 else 0,
+                        callbacks=deepcopy(callbacks),
+                        validation_split=validation_split,
+                        validation_data=validation_data,
+                        **kwargs,
+                    )
                 )
-                for i in range(self.n_ensembles)
-            ]
 
             completed_ensembles = 0
             for future in as_completed(futures):
                 completed_ensembles += 1
+                result = self.ensemble_pool[futures.index(future)]
                 if verbose == 1:
-                    pb_value_dict = {"loss": "{:.4f}".format(future.result().get_history()["loss"][-1])}
+                    pb_value_dict = {"loss": "{:.4f}".format(result.get_history()["loss"][-1])}
                     for metric in self.metrics:
-                        pb_value_dict[metric] = "{:.4f}".format(future.result().get_history()[metric][-1])
+                        pb_value_dict[metric] = "{:.4f}".format(result.get_history()[metric][-1])
                     pb.update(completed_ensembles, value_dict=pb_value_dict)
                 elif verbose > 1:
                     print("\n------ Individual model {} ------".format(completed_ensembles + 1))
-                    verbose_output = "Training - loss: {:.4f}".format(future.result().get_history()["loss"][-1])
+                    verbose_output = "Training - loss: {:.4f}".format(result.get_history()["loss"][-1])
                     for metric in self.metrics:
-                        verbose_output += " - {}: {:.4f}".format(metric, future.result().get_history()[metric][-1])
+                        verbose_output += " - {}: {:.4f}".format(metric, result.get_history()[metric][-1])
                     print(verbose_output)
                     if validation_data is not None or validation_split > 0.0:
-                        verbose_output = "Validation - loss: {:.4f}".format(
-                            future.result().get_history()["val_loss"][-1]
-                        )
+                        verbose_output = "Validation - loss: {:.4f}".format(result.get_history()["val_loss"][-1])
                         for metric in self.metrics:
-                            verbose_output += " - {}: {:.4f}".format(
-                                metric, future.result().get_history()["val_" + metric][-1]
-                            )
+                            verbose_output += " - {}: {:.4f}".format(metric, result.get_history()["val_" + metric][-1])
                         print(verbose_output)
+
+            executor.shutdown(wait=True)
 
         # Build the RUNN model
         self._build()
@@ -490,48 +492,6 @@ class RUNN(AltSpecMonoNN, AltSpecNN, DNN):
                 for metric in ensemble_metrics:
                     verbose_output += " - {}: {:.4f}".format(metric, ensemble_metrics[metric])
                 print(verbose_output)
-
-    def _fit_ensemble(
-        self,
-        i: int,
-        x: Union[tf.Tensor, np.ndarray],
-        y: Union[tf.Tensor, np.ndarray],
-        batch_size: Optional[int],
-        epochs: int,
-        verbose: int,
-        callbacks: Optional[list],
-        validation_split: float,
-        validation_data: Optional[tuple],
-        bootstrap_x: list,
-        bootstrap_y: list,
-        **kwargs,
-    ):
-        """Fit an individual base model in the ensemble.
-
-        This method is used to fit the individual base models in parallel.
-        """
-        if len(bootstrap_x) > 0 and len(bootstrap_y) > 0:
-            x_i, y_i = bootstrap_x[i], bootstrap_y[i]
-        else:
-            x_i, y_i = x, y
-
-        # Create a copy of each callback to avoid conflicts between the individual models
-        if callbacks is not None:
-            callbacks = [deepcopy(callback) for callback in callbacks]
-
-        # Fit the individual base models
-        self.ensemble_pool[i].fit(
-            x=x_i,
-            y=y_i,
-            batch_size=batch_size,
-            epochs=epochs,
-            verbose=verbose - 1 if verbose > 0 else 0,
-            callbacks=callbacks,
-            validation_split=validation_split,
-            validation_data=validation_data,
-            **kwargs,
-        )
-        return self.ensemble_pool[i]
 
     def get_history(self) -> list[dict]:
         """Return the history of the model training for each individual base model.

@@ -356,7 +356,24 @@ class BaseModel:
             # y is not one-hot encoded, hence it should be a 1D array with integers in the range [0, n_alt-1]
             if np.any(y < 0) or np.any(y >= self.n_alt):
                 raise ValueError("The input parameter 'y' should contain integers in the range [0, n_alt-1].")
-
+            
+        if validation_data is not None:
+            if isinstance(validation_data, tuple) and len(validation_data) == 2:
+                x_val, y_val = validation_data
+                if isinstance(x_val, pd.DataFrame):
+                    x_val = x_val.values
+                if isinstance(x_val, np.ndarray):
+                    x_val = tf.convert_to_tensor(x_val)
+                if isinstance(y_val, tf.Tensor):
+                    y_val = y_val.numpy()
+                if not (len(y_val.shape) == 2 and y_val.shape[1] == self.n_alt):
+                    # y is not one-hot encoded, hence it should be a 1D array with integers in the range [0, n_alt-1]
+                    if np.any(y_val < 0) or np.any(y_val >= self.n_alt):
+                        raise ValueError("The input parameter 'y_val' should contain integers in the range [0, n_alt-1].")
+                validation_data = (x_val, y_val)
+            else:
+                raise ValueError("The 'validation_data' parameter should be a tuple (x_val, y_val).")
+            
         history = self.keras_model.fit(
             x, y, batch_size, epochs, verbose, callbacks, validation_split, validation_data, **kwargs
         )
