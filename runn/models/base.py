@@ -1,3 +1,4 @@
+import gc
 from abc import ABCMeta, abstractmethod
 from typing import Optional, Union
 
@@ -98,6 +99,14 @@ class BaseModel:
             self.load(filename)
         else:
             raise ValueError("The 'filename' parameter should be a string.")
+        
+    def __del__(self):
+        """Destructor method to free resources when the object is deleted."""
+        if hasattr(self, "keras_model") and self.keras_model is not None:
+            del self.keras_model
+        if hasattr(self, "history") and self.history is not None:
+            del self.history
+        gc.collect()
 
     def __call__(self, x: tf.Tensor, **kwargs) -> tf.Tensor:
         """Call the model on new inputs and returns the output as tensors.

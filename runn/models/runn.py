@@ -1,4 +1,5 @@
 import datetime
+import gc
 import json
 import os
 import pickle
@@ -142,6 +143,16 @@ class RUNN(AltSpecMonoNN, AltSpecNN, DNN):
         else:
             raise ValueError("The 'filename' parameter should be a string.")
 
+    def __del__(self):
+        """Destructor of the RUNN model."""
+        if hasattr(self, "ensemble_pool") and self.ensemble_pool is not None:
+            for model in self.ensemble_pool:
+                del model
+            del self.ensemble_pool
+        if hasattr(self, "keras_model") and self.keras_model is not None:
+            del self.keras_model
+        gc.collect()
+
     def _initialize_runn_params(self, **kwargs) -> None:
         """Initialize the parameters of the RUNN ensemble model.
 
@@ -222,9 +233,9 @@ class RUNN(AltSpecMonoNN, AltSpecNN, DNN):
                             dropout=self.dropout,
                             batch_norm=self.batch_norm,
                             learning_rate=self.learning_rate,
-                            optimizer=self.optimizer,
-                            loss=self.loss,
-                            metrics=self.metrics,
+                            optimizer=deepcopy(self.optimizer),
+                            loss=deepcopy(self.loss),
+                            metrics=deepcopy(self.metrics),
                         )
                     )
                 elif base_model == "AltSpecNN":
@@ -242,27 +253,27 @@ class RUNN(AltSpecMonoNN, AltSpecNN, DNN):
                             dropout=self.dropout,
                             batch_norm=self.batch_norm,
                             learning_rate=self.learning_rate,
-                            optimizer=self.optimizer,
-                            loss=self.loss,
-                            metrics=self.metrics,
+                            optimizer=deepcopy(self.optimizer),
+                            loss=deepcopy(self.loss),
+                            metrics=deepcopy(self.metrics),
                         )
                     )
                 elif base_model == "AltSpecMonoNN":
                     self.ensemble_pool.append(
                         AltSpecMonoNN(
-                            attributes=deepcopy(self.attributes),
-                            n_alt=deepcopy(self.n_alt),
-                            alt_spec_attrs=deepcopy(self.alt_spec_attrs),
-                            shared_attrs=deepcopy(self.shared_attrs),
-                            socioec_attrs=deepcopy(self.socioec_attrs),
-                            monotonicity_constraints=deepcopy(self.monotonicity_constraints),
-                            layers_dim=deepcopy(self.layers_dim),
-                            activation=deepcopy(self.activation),
-                            regularizer=deepcopy(self.regularizer),
-                            regularization_rate=deepcopy(self.regularization_rate),
-                            dropout=deepcopy(self.dropout),
-                            batch_norm=deepcopy(self.batch_norm),
-                            learning_rate=deepcopy(self.learning_rate),
+                            attributes=self.attributes,
+                            n_alt=self.n_alt,
+                            alt_spec_attrs=self.alt_spec_attrs,
+                            shared_attrs=self.shared_attrs,
+                            socioec_attrs=self.socioec_attrs,
+                            monotonicity_constraints=self.monotonicity_constraints,
+                            layers_dim=self.layers_dim,
+                            activation=self.activation,
+                            regularizer=self.regularizer,
+                            regularization_rate=self.regularization_rate,
+                            dropout=self.dropout,
+                            batch_norm=self.batch_norm,
+                            learning_rate=self.learning_rate,
                             optimizer=deepcopy(self.optimizer),
                             loss=deepcopy(self.loss),
                             metrics=deepcopy(self.metrics),
@@ -469,6 +480,8 @@ class RUNN(AltSpecMonoNN, AltSpecNN, DNN):
                         print(verbose_output)
 
             executor.shutdown(wait=True)
+            del futures
+            gc.collect()
 
         # Build the RUNN model
         self._build()
