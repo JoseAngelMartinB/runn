@@ -16,9 +16,10 @@ site_dir: .docs
 markdown_extensions:
   - admonition
   - attr_list
+  - md_in_html
   - pymdownx.emoji:
-      emoji_index: !!python/name:materialx.emoji.twemoji
-      emoji_generator: !!python/name:materialx.emoji.to_svg
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
   - pymdownx.highlight:
       anchor_linenums: true
       line_spans: __span
@@ -28,6 +29,8 @@ markdown_extensions:
   - pymdownx.snippets
   - pymdownx.tasklist:
       clickable_checkbox: true
+  - pymdownx.tabbed:
+      alternate_style: true
   - toc:
       permalink: "#"
       toc_depth: 3
@@ -35,34 +38,7 @@ hooks:
   - docs/static/hooks.py
 plugins:
   - autorefs
-  - mkdocs-jupyter:
-      include: ["examples/*.ipynb"]
-      allow_errors: false
-      kernel_name: runn
-      include_source: True
-      execute: false
-  - mkdocstrings:
-      default_handler: python
-      handlers:
-        python:
-          options:
-            docstring_section_style: spacy
-            show_bases: true
-            filters:
-              - "!^_"
-            merge_init_into_class: true
-            show_if_no_docstring: true
-            show_signature_annotations: true
-            signature_crossrefs: true
-            show_root_toc_entry: false
-            show_signature_annotations: false
-          import:
-            - https://docs.python.org/3/objects.inv
   - search
-watch:
-  - runn
-extra_css:
-  - static/extras.css
 extra:
   version:
     provider: mike
