@@ -19,7 +19,7 @@ markdown_extensions:
   - md_in_html
   - pymdownx.emoji:
       emoji_index: !!python/name:material.extensions.emoji.twemoji
-      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+      emoji_generator: !!python/name:materialx.emoji.to_svg
   - pymdownx.highlight:
       anchor_linenums: true
       line_spans: __span
@@ -29,8 +29,6 @@ markdown_extensions:
   - pymdownx.snippets
   - pymdownx.tasklist:
       clickable_checkbox: true
-  - pymdownx.tabbed:
-      alternate_style: true
   - toc:
       permalink: "#"
       toc_depth: 3
@@ -38,7 +36,17 @@ hooks:
   - docs/static/hooks.py
 plugins:
   - autorefs
+  - mkdocs-jupyter:
+      include: ["examples/*.ipynb"]
+      allow_errors: false
+      kernel_name: runn
+      include_source: True
+      execute: false
   - search
+watch:
+  - runn
+extra_css:
+  - static/extras.css
 extra:
   version:
     provider: mike
