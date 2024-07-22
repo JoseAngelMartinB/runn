@@ -43,22 +43,23 @@ plugins:
       include_source: True
       execute: false
   - mkdocstrings:
-    default_handler: python
-    handlers:
-      python:
-        options:
-          docstring_section_style: spacy
-          show_bases: true
-          filters:
-            - "!^_"
-          merge_init_into_class: true
-          show_if_no_docstring: true
-          show_signature_annotations: true
-          signature_crossrefs: true
-          show_root_toc_entry: false
-          show_signature_annotations: false
-        import:
-          - https://docs.python.org/3/objects.inv
+      default_handler: python
+      handlers:
+        python:
+          options:
+            docstring_section_style: spacy
+            show_bases: true
+            filters:
+              - "!^_"
+            merge_init_into_class: true
+            show_if_no_docstring: true
+            show_signature_annotations: true
+            signature_crossrefs: true
+            show_root_toc_entry: false
+            show_signature_annotations: false
+          import:
+            - https://docs.python.org/3/objects.inv
+  - search
   - search
 watch:
   - runn
