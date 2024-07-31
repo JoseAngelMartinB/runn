@@ -220,7 +220,7 @@ class EnsembleDNN(DNN):
 
         Args:
             ensemble: Whether to plot the ensemble model or the individual DNN models. Default: True.
-            kwargs: Additional arguments passed to the 'plot_model' function. See the documentation of the
+            **kwargs: Additional arguments passed to the 'plot_model' function. See the documentation of the
                 base class for more details.
         """
         if not ensemble:
@@ -254,7 +254,7 @@ class EnsembleDNN(DNN):
     ) -> tf.keras.callbacks.History:
         """Train the ensemble model.
 
-         Args:
+        Args:
             x: Input data. It can be a tf.Tensor, np.ndarray or pd.DataFrame.
             y: The alternative selected by each decision maker in the sample x. Can be either a tf.Tensor or np.ndarray.
                 It should be a 1D array with integers in the range [0, n_alt-1] or a 2D array with one-hot encoded
@@ -280,8 +280,8 @@ class EnsembleDNN(DNN):
 
         Returns:
             A list of tf.keras.callbacks.History objects, one for each individual DNN model. Each History object is a
-            record of training loss values and metrics values at successive epochs, as well as validation loss values
-            and validation metrics values (if applicable).
+                record of training loss values and metrics values at successive epochs, as well as validation loss
+                values and validation metrics values (if applicable).
         """
         # Check if the ensemble model has been initialized
         if self.ensemble_pool is None or len(self.ensemble_pool) == 0:

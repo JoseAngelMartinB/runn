@@ -431,7 +431,7 @@ class BaseModel:
 
         Returns:
             Scalar test loss (if the model has a single output and no metrics) or list of scalars (if the model has
-            multiple outputs and/or metrics). See tf.keras.Model.evaluate() for details.
+                multiple outputs and/or metrics). See tf.keras.Model.evaluate() for details.
         """
         if self.fitted is False:
             raise Exception("The model is not fitted yet. Please call the 'fit' method first.")

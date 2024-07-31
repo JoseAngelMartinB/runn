@@ -29,26 +29,7 @@ from tensorflow.types.experimental import TensorLike
 
 
 class MonoDense(Dense):
-    """Monotonic counterpart of the regular Dense Layer of tf.keras
-
-    This is an implementation of our Monotonic Dense Unit or Constrained Monotone Fully Connected Layer. The below is the figure from the paper for reference.
-
-    - the parameter `monotonicity_indicator` corresponds to **t** in the figure below, and
-
-    - parameters `is_convex`, `is_concave` and `activation_weights` are used to calculate the activation selector **s** as follows:
-
-        - if `is_convex` or `is_concave` is **True**, then the activation selector **s** will be (`units`, 0, 0) and (0, `units`, 0), respecively.
-
-        - if both  `is_convex` or `is_concave` is **False**, then the `activation_weights` represent ratios between $\\breve{s}$, $\\hat{s}$ and $\\tilde{s}$,
-          respecively. E.g. if `activation_weights = (2, 2, 1)` and `units = 10`, then
-
-    $$
-    (\\breve{s}, \\hat{s}, \\tilde{s}) = (4, 4, 2)
-    $$
-
-    ![mono-dense-layer-diagram.png](../../../../../images/nbs/images/mono-dense-layer-diagram.png)
-
-    """
+    """Monotonic counterpart of the regular Dense Layer of tf.keras"""
 
     def __init__(
         self,
@@ -331,8 +312,6 @@ class MonoDense(Dense):
         whether the problem at hand is a regression problem or a classification problem (or even a multi-task problem), an appropriate
         activation function (such as linear activation or sigmoid or softmax) to obtain the final output.
 
-        ![mono-dense-layer-diagram.png](../../../images/nbs/images/type-1.png)
-
         Args:
             inputs: input tensor or a dictionary of tensors
             units: number of units in hidden layers
@@ -395,8 +374,6 @@ class MonoDense(Dense):
         we concatenate the feature vectors instead of concatenating the inputs directly. The subsequent parts of the network are
         similar to the architecture described above wherein for the rest of the hidden monotonic dense units, the indicator vector
         $\mathbf{t}$ is always set to $1$ to preserve monotonicity.
-
-        ![mono-dense-layer-diagram.png](../../../images/nbs/images/type-2.png)
 
         Args:
             inputs: input tensor or a dictionary of tensors
@@ -562,8 +539,6 @@ def _create_type_1(
     whether the problem at hand is a regression problem or a classification problem (or even a multi-task problem), an appropriate
     activation function (such as linear activation or sigmoid or softmax) to obtain the final output.
 
-    ![mono-dense-layer-diagram.png](../../../images/nbs/images/type-1.png)
-
     Args:
         inputs: input tensor or a dictionary of tensors
         units: number of units in hidden layers
@@ -633,8 +608,6 @@ def _create_type_2(
     we concatenate the feature vectors instead of concatenating the inputs directly. The subsequent parts of the network are
     similar to the architecture described above wherein for the rest of the hidden monotonic dense units, the indicator vector
     $\mathbf{t}$ is always set to $1$ to preserve monotonicity.
-
-    ![mono-dense-layer-diagram.png](../../../images/nbs/images/type-2.png)
 
     Args:
         inputs: input tensor or a dictionary of tensors

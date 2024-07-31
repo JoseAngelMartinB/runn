@@ -332,7 +332,7 @@ class RUNN(AltSpecMonoNN, AltSpecNN, DNN):
 
         Args:
             ensemble: Whether to plot the RUNN ensemble model or the individual base models. Default: True.
-            kwargs: Additional arguments passed to the 'plot_model' function. See the documentation of the
+            **kwargs: Additional arguments passed to the 'plot_model' function. See the documentation of the
                 base class for more details.
         """
         if not ensemble:
@@ -366,7 +366,7 @@ class RUNN(AltSpecMonoNN, AltSpecNN, DNN):
     ) -> tf.keras.callbacks.History:
         """Train the RUNN model.
 
-         Args:
+        Args:
             x: Input data. It can be a tf.Tensor, np.ndarray or pd.DataFrame.
             y: The alternative selected by each decision maker in the sample x. Can be either a tf.Tensor or np.ndarray.
                 It should be a 1D array with integers in the range [0, n_alt-1] or a 2D array with one-hot encoded
@@ -392,8 +392,8 @@ class RUNN(AltSpecMonoNN, AltSpecNN, DNN):
 
         Returns:
             A list of tf.keras.callbacks.History objects, one for each individual base model. Each History object is a
-            record of training loss values and metrics values at successive epochs, as well as validation loss values
-            and validation metrics values (if applicable).
+                record of training loss values and metrics values at successive epochs, as well as validation loss
+                values and validation metrics values (if applicable).
         """
         # Check if the RUNN model has been initialized
         if self.ensemble_pool is None or len(self.ensemble_pool) == 0:

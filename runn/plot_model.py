@@ -70,27 +70,27 @@ def model_to_dot(
 ):
     """Convert a Keras model to dot format.
 
-    Arguments:
-      model: A Keras model instance.
-      show_shapes: whether to display shape information.
-      show_layer_names: whether to display layer names.
-      rankdir: `rankdir` argument passed to PyDot,
-          a string specifying the format of the plot:
-          'TB' creates a vertical plot;
-          'LR' creates a horizontal plot.
-      expand_nested: whether to expand nested models into clusters.
-      dpi: Dots per inch.
-      style: value 0,1.
-      color: whether to display color.
-      subgraph: whether to return a `pydot.Cluster` instance.
+    Args:
+        model: A Keras model instance.
+        show_shapes: whether to display shape information.
+        show_layer_names: whether to display layer names.
+        rankdir: `rankdir` argument passed to PyDot,
+            a string specifying the format of the plot:
+            'TB' creates a vertical plot;
+            'LR' creates a horizontal plot.
+        expand_nested: whether to expand nested models into clusters.
+        dpi: Dots per inch.
+        style: value 0,1.
+        color: whether to display color.
+        subgraph: whether to return a `pydot.Cluster` instance.
 
     Returns:
-      A `pydot.Dot` instance representing the Keras model or
-      a `pydot.Cluster` instance representing nested model if
-      `subgraph=True`.
+        A `pydot.Dot` instance representing the Keras model or
+            a `pydot.Cluster` instance representing nested model if
+            `subgraph=True`.
 
     Raises:
-      ImportError: if graphviz or pydot are not available.
+        ImportError: if graphviz or pydot are not available.
     """
     from tensorflow.keras import Model as Network
     from tensorflow.keras.layers import Wrapper
@@ -422,23 +422,23 @@ def plot_model(
 ):
     """Converts a Keras model to dot format and save to a file.
 
-    Arguments:
-      model: A Keras model instance
-      to_file: File name of the plot image.
-      show_shapes: whether to display shape information.
-      show_layer_names: whether to display layer names.
-      rankdir: `rankdir` argument passed to PyDot,
-          a string specifying the format of the plot:
-          'TB' creates a vertical plot;
-          'LR' creates a horizontal plot.
-      expand_nested: Whether to expand nested models into clusters.
-      style: value 0,1.
-      color: whether to display color.
-      dpi: Dots per inch.
+    Args:
+        model: A Keras model instance
+        to_file: File name of the plot image.
+        show_shapes: whether to display shape information.
+        show_layer_names: whether to display layer names.
+        rankdir: `rankdir` argument passed to PyDot,
+            a string specifying the format of the plot:
+            'TB' creates a vertical plot;
+            'LR' creates a horizontal plot.
+        expand_nested: Whether to expand nested models into clusters.
+        style: value 0,1.
+        color: whether to display color.
+        dpi: Dots per inch.
 
     Returns:
-      A Jupyter notebook Image object if Jupyter is installed.
-      This enables in-line display of the model plots in notebooks.
+        A Jupyter notebook Image object if Jupyter is installed.
+            This enables in-line display of the model plots in notebooks.
     """
     assert style == 0 or style == 1
     dot = model_to_dot(
