@@ -187,6 +187,7 @@ class RUNN(AltSpecMonoNN, AltSpecNN, DNN):
                 "Setting 'n_jobs' to %d." % (n_cpus, n_cpus)
             )
             warning_manager.warn(msg)
+        self.callbacks = []
         self.base_model = kwargs["base_model"]
 
     def _initialize_ensemble_pool(self, base_model: str, filename_list: Optional[list[str]] = None) -> None:
@@ -428,6 +429,9 @@ class RUNN(AltSpecMonoNN, AltSpecNN, DNN):
                 bootstrap_x.append(tf.gather(x, bootstrap_idx))
                 bootstrap_y.append(y[bootstrap_idx])
 
+        # Initialize the callbacks list. Each individual model will have its own list of callbacks to avoid conflicts
+        self.callbacks = []
+
         if verbose == 1:
             pb = ProgressBar(total=self.n_ensembles)
             pb.update(0)
@@ -442,6 +446,7 @@ class RUNN(AltSpecMonoNN, AltSpecNN, DNN):
                     x_i, y_i = bootstrap_x[i], bootstrap_y[i]
                 else:
                     x_i, y_i = x, y
+                self.callbacks.append(deepcopy(callbacks))
 
                 futures.append(
                     executor.submit(
@@ -451,7 +456,7 @@ class RUNN(AltSpecMonoNN, AltSpecNN, DNN):
                         batch_size=batch_size,
                         epochs=epochs,
                         verbose=verbose - 1 if verbose > 0 else 0,
-                        callbacks=deepcopy(callbacks),
+                        callbacks=self.callbacks[i],
                         validation_split=validation_split,
                         validation_data=validation_data,
                         **kwargs,
