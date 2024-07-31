@@ -1600,19 +1600,8 @@ alternatives.</p>
             </td>
             <td class="doc-returns-details">
               <div class="doc-md-description">
-                <p>Scalar test loss (if the model has a single output and no metrics) or list of scalars (if the model has</p>
-              </div>
-            </td>
-          </tr>
-          <tr class="doc-section-item">
-            <td>
-                <span class="doc-returns-annotation">
-                    <code><a class="autorefs autorefs-external" title="typing.Union" href="https://docs.python.org/3/library/typing.html#typing.Union">Union</a>[<a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a>, <a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#list">list</a>]</code>
-                </span>
-            </td>
-            <td class="doc-returns-details">
-              <div class="doc-md-description">
-                <p>multiple outputs and/or metrics). See tf.keras.Model.evaluate() for details.</p>
+                <p>Scalar test loss (if the model has a single output and no metrics) or list of scalars (if the model has
+multiple outputs and/or metrics). See tf.keras.Model.evaluate() for details.</p>
               </div>
             </td>
           </tr>
@@ -1664,7 +1653,7 @@ alternatives.</p>
 </span><span id="__span-0-431"><a id="__codelineno-0-431" name="__codelineno-0-431"></a>
 </span><span id="__span-0-432"><a id="__codelineno-0-432" name="__codelineno-0-432"></a><span class="sd">    Returns:</span>
 </span><span id="__span-0-433"><a id="__codelineno-0-433" name="__codelineno-0-433"></a><span class="sd">        Scalar test loss (if the model has a single output and no metrics) or list of scalars (if the model has</span>
-</span><span id="__span-0-434"><a id="__codelineno-0-434" name="__codelineno-0-434"></a><span class="sd">        multiple outputs and/or metrics). See tf.keras.Model.evaluate() for details.</span>
+</span><span id="__span-0-434"><a id="__codelineno-0-434" name="__codelineno-0-434"></a><span class="sd">            multiple outputs and/or metrics). See tf.keras.Model.evaluate() for details.</span>
 </span><span id="__span-0-435"><a id="__codelineno-0-435" name="__codelineno-0-435"></a><span class="sd">    &quot;&quot;&quot;</span>
 </span><span id="__span-0-436"><a id="__codelineno-0-436" name="__codelineno-0-436"></a>    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">fitted</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
 </span><span id="__span-0-437"><a id="__codelineno-0-437" name="__codelineno-0-437"></a>        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;The model is not fitted yet. Please call the &#39;fit&#39; method first.&quot;</span><span class="p">)</span>
