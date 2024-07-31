@@ -60,7 +60,6 @@ plugins:
           import:
             - https://docs.python.org/3/objects.inv
   - search
-  - search
 watch:
   - runn
 extra_css:
