@@ -152,18 +152,27 @@ class AltSpecNN(DNN):
         input_shape = (len(self.attributes),)
         inputs = Input(shape=input_shape, name="features")
         # Extract the shared attributes
-        x_shared = Gather(self.shared_attrs_idx, axis=1, name="shared_attrs")(inputs)
+        if len(self.shared_attrs_idx) > 0:
+            x_shared = Gather(self.shared_attrs_idx, axis=1, name="shared_attrs")(inputs)
+        else:
+            x_shared = None
         # Extract the socio-economic attributes
-        x_socioec = Gather(self.socioec_attrs_idx, axis=1, name="socioec_attrs")(inputs)
+        if len(self.socioec_attrs_idx) > 0:
+            x_socioec = Gather(self.socioec_attrs_idx, axis=1, name="socioec_attrs")(inputs)
+        else:
+            x_socioec = None
 
         # Construct the utility of each alternative
         utilities = []
         for alt in range(0, self.n_alt):
             # Alternative-specific attributes layer
-            x_alt_spec = Gather(self.alt_spec_attrs_idx[alt], axis=1, name="alt_spec_attrs_{}".format(alt))(inputs)
+            if len(self.alt_spec_attrs_idx[alt]) > 0:
+                x_alt_spec = Gather(self.alt_spec_attrs_idx[alt], axis=1, name="alt_spec_attrs_{}".format(alt))(inputs)
+            else:
+                x_alt_spec = None
 
             # Define the alternative-specific utility block for the current alternative
-            utilities.append(self._build_alt_utility_block(x_alt_spec, x_shared, x_socioec, alt))
+            utilities.append(self._build_alt_utility_block(alt, x_alt_spec, x_shared, x_socioec))
 
         # Concatenate the utilities of all alternatives
         u = concatenate(utilities, axis=1, name="U")
@@ -173,18 +182,42 @@ class AltSpecNN(DNN):
         self.keras_model = Model(inputs=inputs, outputs=outputs, name="AltSpecNN")
 
     def _build_alt_utility_block(
-        self, x_alt_spec: tf.Tensor, x_shared: tf.Tensor, x_socioec: tf.Tensor, alt: int
+        self,
+        alt: int,
+        x_alt_spec: Optional[tf.Tensor] = None,
+        x_shared: Optional[tf.Tensor] = None,
+        x_socioec: Optional[tf.Tensor] = None,
     ) -> tf.Tensor:
         """Build the architecture of the alternative-specific utility block.
 
+        The alternative-specific, shared, and socio-economic attributes are concatenated and passed through a series
+            of hidden layers to compute the pseudo-utility of the alternative. The pseudo-utility is the output of the
+            last hidden layer. It is not necessary to include alternative-specific, shared, or socio-economic attributes
+            in the model but at least one of them must be included to build the utility block.
+
         Args:
-            x_alt_spec: Tensor with the alternative-specific attributes.
-            x_shared: Tensor with the shared attributes.
-            x_socioec: Tensor with the socio-economic attributes.
             alt: Index of the alternative for which the utility block will be built.
+            x_alt_spec: Tensor with the alternative-specific attributes. If None, the alternative does not have
+                alternative-specific attributes.
+            x_shared: Tensor with the shared attributes. If None, the alternative does not have shared attributes.
+            x_socioec: Tensor with the socio-economic attributes. If None, the alternative does not have socio-economic
+                attributes.
         """
-        # Concatenate the alternative-specific, shared, and socio-economic attributes
-        x = concatenate([x_alt_spec, x_shared, x_socioec], axis=1, name="Attrs_alt_{}".format(alt))
+        # Concatenate the alternative-specific, shared, and socio-economic attributes (if they are available)
+        x_concat = []
+        if x_alt_spec is not None:
+            x_concat.append(x_alt_spec)
+        if x_shared is not None:
+            x_concat.append(x_shared)
+        if x_socioec is not None:
+            x_concat.append(x_socioec)
+        if len(x_concat) == 0:
+            msg = (
+                "There are no attributes to build the utility block for alternative {}. Please check the ",
+                "'alt_spec_attrs', 'shared_attrs', and 'socioec_attrs' parameters.".format(alt),
+            )
+            raise ValueError(msg)
+        x = concatenate(x_concat, axis=1, name="Attrs_alt_{}".format(alt))
 
         # Hidden layers
         for L in range(0, len(self.layers_dim)):
@@ -364,10 +397,10 @@ class AltSpecNN(DNN):
             os.rmdir(aux_files)
 
     def get_utility(
-            self,
-            x: Union[tf.Tensor, np.ndarray, pd.DataFrame],
-            name: str = "AltSpecNN_Utility",
-        ) -> np.ndarray:
+        self,
+        x: Union[tf.Tensor, np.ndarray, pd.DataFrame],
+        name: str = "AltSpecNN_Utility",
+    ) -> np.ndarray:
         """Get the utility of each alternative for a given set of observations.
 
         Args:
