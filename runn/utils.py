@@ -27,7 +27,7 @@ class WarningManager:
             cls._instance.show_warnings = True
         return cls._instance
 
-    def warn(self, message: str) -> None:
+    def warn(self, message: str, category: Warning = Warning) -> None:
         """Show a warning message.
 
         Args:
@@ -36,7 +36,7 @@ class WarningManager:
         if not isinstance(message, str):
             raise ValueError("The message should be a string.")
         if self.show_warnings:
-            warnings.warn(message)
+            warnings.warn(message, Warning)
 
     def set_show_warnings(self, show_warnings: bool) -> None:
         """Set whether to show warnings or not.
