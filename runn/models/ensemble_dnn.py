@@ -1,7 +1,10 @@
 import datetime
+import gc
 import json
 import os
 import pickle
+from concurrent.futures import ThreadPoolExecutor, as_completed
+from copy import deepcopy
 from typing import Optional, Union
 from zipfile import ZipFile
 
@@ -300,6 +303,7 @@ class EnsembleDNN(DNN):
             if np.any(y < 0) or np.any(y >= self.n_alt):
                 raise ValueError("The input parameter 'y' should contain integers in the range [0, n_alt-1].")
 
+        bootstrap_x, bootstrap_y = [], []
         if bagging is not None:
             # Use bagging
             if not isinstance(bagging, float):
@@ -309,7 +313,6 @@ class EnsembleDNN(DNN):
                 msg = "The 'bagging' parameter should be between 0.0 and 1.0."
                 raise ValueError(msg)
             # Split the data into bootstrap samples
-            bootstrap_x, bootstrap_y = [], []
             idx = np.arange(len(x))
             for i in range(self.n_ensembles):
                 # Select random samples with replacement from the data using the bootstrap sample size
@@ -317,53 +320,64 @@ class EnsembleDNN(DNN):
                 bootstrap_x.append(tf.gather(x, bootstrap_idx))
                 bootstrap_y.append(y[bootstrap_idx])
 
+        # Initialize the callbacks list. Each individual model will have its own list of callbacks to avoid conflicts
+        self.callbacks = []
+
         if verbose == 1:
             pb = ProgressBar(total=self.n_ensembles)
             pb.update(0)
         elif verbose > 1:
             print("Estimating the individual DNN models...")
 
-        # Fit the ensemble models
-        for i in range(self.n_ensembles):
-            if verbose > 1:
-                print("\n------ DNN model {} ------".format(i + 1))
-            if bagging is not None:
-                x_i, y_i = bootstrap_x[i], bootstrap_y[i]
-            else:
-                x_i, y_i = x, y
-            # Fit the individual DNN model
-            self.ensemble_pool[i].fit(
-                x=x_i,
-                y=y_i,
-                batch_size=batch_size,
-                epochs=epochs,
-                verbose=verbose - 1,
-                callbacks=callbacks,
-                validation_split=validation_split,
-                validation_data=validation_data,
-                **kwargs,
-            )
+        # Fit the individual base models in parallel
+        with ThreadPoolExecutor(max_workers=self.n_jobs) as executor:
+            futures = []
+            for i in range(self.n_ensembles):
+                if bagging is not None:
+                    x_i, y_i = bootstrap_x[i], bootstrap_y[i]
+                else:
+                    x_i, y_i = x, y
+                self.callbacks.append(deepcopy(callbacks))
 
-            # Update the progress bar or print the verbose output
-            if verbose == 1:
-                pb_value_dict = {"loss": "{:.4f}".format(self.ensemble_pool[i].get_history()["loss"][-1])}
-                for metric in self.metrics:
-                    pb_value_dict[metric] = "{:.4f}".format(self.ensemble_pool[i].get_history()[metric][-1])
-                pb.update(i + 1, value_dict=pb_value_dict)
-            elif verbose > 1:
-                verbose_output = "Training - loss: {:.4f}".format(self.ensemble_pool[i].get_history()["loss"][-1])
-                for metric in self.metrics:
-                    verbose_output += " - {}: {:.4f}".format(metric, self.ensemble_pool[i].get_history()[metric][-1])
-                print(verbose_output)
-                if validation_data is not None or validation_split > 0.0:
-                    verbose_output = "Validation - loss: {:.4f}".format(
-                        self.ensemble_pool[i].get_history()["val_loss"][-1]
+                futures.append(
+                    executor.submit(
+                        self.ensemble_pool[i].fit,
+                        x=x_i,
+                        y=y_i,
+                        batch_size=batch_size,
+                        epochs=epochs,
+                        verbose=verbose - 1 if verbose > 0 else 0,
+                        callbacks=self.callbacks[i],
+                        validation_split=validation_split,
+                        validation_data=validation_data,
+                        **kwargs,
                     )
+                )
+
+            completed_ensembles = 0
+            for future in as_completed(futures):
+                completed_ensembles += 1
+                result = self.ensemble_pool[futures.index(future)]
+                if verbose == 1:
+                    pb_value_dict = {"loss": "{:.4f}".format(result.get_history()["loss"][-1])}
                     for metric in self.metrics:
-                        verbose_output += " - {}: {:.4f}".format(
-                            metric, self.ensemble_pool[i].get_history()["val_" + metric][-1]
-                        )
+                        pb_value_dict[metric] = "{:.4f}".format(result.get_history()[metric][-1])
+                    pb.update(completed_ensembles, value_dict=pb_value_dict)
+                elif verbose > 1:
+                    print("\n------ Individual DNN model {} ------".format(completed_ensembles + 1))
+                    verbose_output = "Training - loss: {:.4f}".format(result.get_history()["loss"][-1])
+                    for metric in self.metrics:
+                        verbose_output += " - {}: {:.4f}".format(metric, result.get_history()[metric][-1])
                     print(verbose_output)
+                    if validation_data is not None or validation_split > 0.0:
+                        verbose_output = "Validation - loss: {:.4f}".format(result.get_history()["val_loss"][-1])
+                        for metric in self.metrics:
+                            verbose_output += " - {}: {:.4f}".format(metric, result.get_history()["val_" + metric][-1])
+                        print(verbose_output)
+
+            executor.shutdown(wait=True)
+            del futures
+            gc.collect()
 
         # Build the ensemble model
         self._build()
